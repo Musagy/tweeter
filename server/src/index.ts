@@ -1,8 +1,17 @@
 import app from "./app"
-import colorizeText from "./utils/colorizeText";
+import colorizeText from "./utils/colorizeText"
+import * as dotenv from 'dotenv'
 
-const PORT = process.env.PORT || 4000;
+dotenv.config()
 
-app.listen(PORT,()=>{
-  console.log("Server corriendo desde en: " + colorizeText(`${PORT === 4000 ? "http://localhost:" + PORT : PORT}`, "yellow"));
+const PORT = process.env.PORT || 4000
+
+app.listen(PORT, () => {
+  console.log(
+    "Server corriendo desde en: " +
+      colorizeText(
+        `${PORT === 4000 ? "http://localhost:" + PORT : PORT}`,
+        "yellow"
+      )
+  )
 })
