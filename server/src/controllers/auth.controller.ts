@@ -1,5 +1,5 @@
 import { RequestHandler } from "express"
-import { loginUser, registerNewUser } from "../services/auth.service"
+import { loginUser, registerNewUser } from "../services/auth"
 import { handleHttp } from "../utils/errorHandle"
 
 
@@ -7,7 +7,7 @@ export const signUp: RequestHandler = async ({ body }, res) => {
   try {
     const responseUser = await registerNewUser(body)
     if (
-      // responseUser === "Email already exists" ||
+      responseUser === "Email already exists" ||
       responseUser === "Username already exists"
     )
       res.status(400).send(responseUser)
@@ -26,6 +26,7 @@ export const signIn: RequestHandler = async ({ body }, res) => {
   if (responseUser === "user or password incorrect") {
     res.status(403);
     res.send(responseUser);
+    // res.send({ message: responseUser })
   } else {
     res.send(responseUser);
   }

@@ -1,5 +1,11 @@
+import { routes } from "../../src/router/index"
+
 describe("router test", () => {
-  test("1 is 1", () => {
-    expect(1).toBe(1)
+  test("should have routes auth", () => {
+    expect(routes).toContainEqual("auth.routes.ts")
+  })
+
+  test("should have routes user", () => {
+    expect(routes).toContainEqual("user.routes.ts")
   })
 })

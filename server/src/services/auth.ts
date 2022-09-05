@@ -31,12 +31,13 @@ export const loginUser = async ({
   usernameOrEmail: string
   password: string
 }) => {
+  if(!usernameOrEmail || !password) return "user or password incorrect"
   const checkIs = await prisma.users.findMany({
     where: {
       OR: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     },
   })
-  if (!checkIs) return "user or password incorrect"
+  if (checkIs.length == 0) return "user or password incorrect"
   const isCorrect = await verified(password, checkIs[0].password)
   if (!isCorrect) return "user or password incorrect"
   const token = generateToken(checkIs[0].email)
