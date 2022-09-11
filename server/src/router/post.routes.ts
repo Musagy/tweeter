@@ -1,8 +1,10 @@
-import { Router } from "express";
-// import * as authCtrl from "../controllers/auth.controller";
+import { Router } from "express"
+import * as postCtrl from "../controllers/post.controller"
+import { checkJwt } from "../middleware/session"
 
-const router = Router();
+const router = Router()
 
-// router.post("/signup", authCtrl.signUp);
+router.post("/create", checkJwt, postCtrl.createPost)
+router.post("/count/me", checkJwt, postCtrl.countMyPosts)
 
-export {router};
+export { router }

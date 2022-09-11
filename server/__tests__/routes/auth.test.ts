@@ -27,7 +27,7 @@ describe("Auth Routes test", () => {
   test("should login and return a token", async () => {
     const req = {
       password: "1234",
-      usernameOrEmail: "9877@test.io",
+      usernameOrEmail: "58042@test.io",
     }
 
     const res = await request(app).post("/auth/signin").send(req)

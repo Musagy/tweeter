@@ -40,9 +40,9 @@ model Follows {
 
 model Posts {
   id           Int          @default(autoincrement()) @id
-  title        String
+  createdAt    DateTime     @default(now())
   content      String?
-  published    Boolean      @default(false)
+  published    Boolean      @default(true)
   author       Users        @relation(fields: [authorId], references: [id])
   authorId     Int
   favorites    Likes[]
