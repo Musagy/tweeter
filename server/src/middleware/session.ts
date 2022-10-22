@@ -13,11 +13,9 @@ const checkJwt = (req: Request, res: Response, next: NextFunction) => {
       res.send("No tiene un JWT valido")
     } else {
       req.body.user = isUser.id
-      console.log(isUser)
       next()
     }
   } catch (e) {
-    console.log({ e })
     res.status(400)
     res.send("Sección no valida")
   }

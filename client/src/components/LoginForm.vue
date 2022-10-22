@@ -55,7 +55,6 @@ const loginData: Ref<LoginData> = ref({
   password: "",
 })
 const errHandler: Ref<string> = ref("")
-const userVoid: LoginResponse = { token: "", user: null }
 
 const handlerSubmit = async () => {
   errHandler.value = ""

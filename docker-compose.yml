@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/tweeter/client
+    command: yarn dev
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    links:
+      - postgres
+    volumes:
+      - ./server:/tweeter/server
+      - ignore:/tweeter/server/node_modules
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        npx prisma generate
+        yarn dev
+
+  postgres:
+    image: postgres:10.3
+    restart: always
+    environment:
+      - POSTGRES_USER=musagy
+      - POSTGRES_PASSWORD=1234
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres:
+  ignore:

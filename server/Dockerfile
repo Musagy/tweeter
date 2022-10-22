@@ -1,0 +1,11 @@
+FROM node:18
+
+WORKDIR /tweeter/server
+
+RUN npm i --location=global yarn --force
+
+# COPY . .
+
+RUN yarn install
+
+EXPOSE 4001
