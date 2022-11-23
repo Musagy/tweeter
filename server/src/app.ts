@@ -18,7 +18,7 @@ app.get("/", (_, res) => {
     author: pkg.author,
     description: pkg.description,
     version: pkg.version,
-    message: "hola chupapis",
+    message: "hola chupapis 🤑",
   })
 })
 

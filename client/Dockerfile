@@ -1,11 +1,16 @@
 FROM node:18
 
-WORKDIR /tweeter/client
+ENV DIR=/home/app/tweeter/client
+RUN mkdir -p ${DIR}
+WORKDIR ${DIR}
 
-RUN npm i --location=global yarn --force
+COPY package.json ./
+RUN yarn install && yarn cache clean
+## para evitar errores de los comandos 
+# ENV PATH=${DIR}/node_modules/.bin:$PATH
 
-# COPY . .
+COPY . .
 
-RUN yarn install
+EXPOSE ${PORT}
 
-EXPOSE 3000
+CMD [ "yarn", "dev" ]
