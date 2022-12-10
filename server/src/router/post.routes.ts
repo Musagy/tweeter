@@ -14,4 +14,6 @@ router.post("/:id", postCtrl.getPostById)
 
 router.put("/:id", checkJwt, postCtrl.editPostById)
 
+router.get("/search/:content", postCtrl.searchPost)
+
 export { router }

@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from "@prisma/client"
+import { String } from "../interfaces/typeNullable"
 
 const prisma = new PrismaClient()
 
@@ -15,6 +16,11 @@ export const getPostsCount = async (authorId: number) => {
   })
   return res
 }
+
+/**
+ * Esta función crea una pagina de posts lista para pintar en pantalla,
+ * tambien se le pueden poner cosas como el orden de los posts
+ */
 export const getPostPage = async ({
   where = {},
   page = 1,
@@ -27,6 +33,8 @@ export const getPostPage = async ({
   take?: number
 }) => {
   const skip = (page - 1) * 15
+
+  // Datos de autor para que vaya en el post
   const include: Prisma.PostsInclude = {
     author: {
       select: {
@@ -37,6 +45,7 @@ export const getPostPage = async ({
     },
   }
 
+  // Settear como se ordenaran los posts
   const orderBy: Prisma.Enumerable<Prisma.PostsOrderByWithRelationInput> = [
     orderByExt,
     { createdAt: "desc" },
@@ -48,7 +57,6 @@ export const getPostPage = async ({
     orderBy,
     skip,
   }
-  console.log(config)
   const res = await prisma.posts.findMany(config)
   return res
 }
@@ -88,22 +96,28 @@ export const verifyAuthority = async (postId: string, userId: string) => {
   if (post === null || post?.authorId !== +userId) return false
   return true
 }
-
-export const searchPost = async (search: string, page = 1, take = 1) => {
+export const searchPost = async (
+  search: string,
+  page: String = "1",
+  take: String = "15"
+) => {
+  // Esta constante almacenara los post que retornara getPostPage con los ajustes para el buscador
   const post = await getPostPage({
     where: {
       OR: [
-        { content: { contains: search } },
+        { content: { contains: search, mode: "insensitive" } },
         {
           author: {
-            OR: [{ username: search }, { name: search }],
+            OR: [
+              { username: { contains: search, mode: "insensitive" } },
+              { name: { contains: search, mode: "insensitive" } },
+            ],
           },
         },
-        { createdAt: search },
       ],
     },
-    page,
-    take,
+    page: Number.parseInt(page),
+    take: Number.parseInt(take),
   })
   return post
 }

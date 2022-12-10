@@ -1,5 +1,4 @@
-import request from "supertest"
-import app from "../../src/app"
+import { API } from "../../src/utils/defaultData"
 
 describe("Auth Routes test", () => {
   test("should create a new user", async () => {
@@ -17,7 +16,7 @@ describe("Auth Routes test", () => {
       username: userNameRandom,
     }
 
-    const res = await request(app).post("/auth/signup").send(req)
+    const res = await API.post("/auth/signup").send(req)
 
     expect(res.status).toEqual(200)
     expect(res.headers["content-type"]).toContain("application/json")
@@ -30,7 +29,7 @@ describe("Auth Routes test", () => {
       usernameOrEmail: "58042@test.io",
     }
 
-    const res = await request(app).post("/auth/signin").send(req)
+    const res = await API.post("/auth/signin").send(req)
 
     expect(res.status).toEqual(200)
     expect(res.headers["content-type"]).toContain("application/json")

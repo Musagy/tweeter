@@ -28,10 +28,10 @@ model Users {
 }
 
 model Follows {
-  follower    Users @relation("follower", fields: [followerId], references: [id])
-  followerId  Int
-  following   Users @relation("following", fields: [followingId], references: [id])
-  followingId Int
+  follower     Users     @relation("follower", fields: [followerId], references: [id])
+  followerId   Int
+  following    Users     @relation("following", fields: [followingId], references: [id])
+  followingId  Int
 
   createdAt    DateTime  @default(now())
 

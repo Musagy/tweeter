@@ -1,7 +1,12 @@
+
+/**
+ * Función que convierte las propiedades del request a objetos 
+ */
 export function propsToObjs<T>(
   req: any,
   props: string[],
   toInt: boolean = true
+  // inObjs: boolean = true
 ): (
   | {
       [x: string]: T
@@ -10,8 +15,6 @@ export function propsToObjs<T>(
 )[] {
   return props.map(prop => {
     const value = req[prop]
-    // if (toInt) return value ? { [prop]: +value } : undefined
-    // return value ? { [prop]: value } : undefined
     if (toInt) return {[prop]: +value || undefined }
     
     return {[prop]: value || undefined }

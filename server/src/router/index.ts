@@ -15,12 +15,14 @@ routes.forEach(fileName => {
   const cleanName = cleanFileName(fileName)
   if (cleanName !== "index") {
     import(`./${cleanName}.routes`).then(moduleRouter => {
-      console.log(
-        `se esta cargando la ruta... /${colorizeText(
-          cleanName,
-          colorFont(`${cleanName}`)
-        )}`
-      )
+      if (process.env.NODE_ENV !== "test")
+        console.log(
+          `se esta cargando la ruta... /${colorizeText(
+            cleanName,
+            colorFont(`${cleanName}`)
+          )}`
+        )
+
       router.use(`/${cleanName}`, moduleRouter.router)
     })
   }

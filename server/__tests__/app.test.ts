@@ -9,7 +9,7 @@ describe("App module test", () => {
       "author": "Musagy",
       "description": "tweeter server",
       "version": "1.0.0",
-      "message": "hola chupapis"
+      "message": "hola chupapis 🤑"
     })
   })
 })
