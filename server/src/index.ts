@@ -1,12 +1,12 @@
 import colorizeText from "./utils/colorizeText"
 import app from "./app"
 // 
-const PORT = process.env.PORT || 4001
+const PORT = `${process.env.PORT}`
 app.listen(PORT, () => {
   console.log(
     "Server corriendo desde en: " +
       colorizeText(
-        `${PORT === 4001 ? "http://localhost:" + PORT : PORT}`,
+        `${Number.parseInt(PORT) === 4001 ? "http://localhost:" + PORT : PORT}`,
         "yellow"
       )
   )

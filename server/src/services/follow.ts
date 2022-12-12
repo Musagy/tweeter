@@ -53,15 +53,15 @@ export const toggleFollow = async (followerId: String, followingId: String) => {
   if (!followerId || !followingId)
     return "No se pudo hacer la accion por falta de datos"
 
-  const isFollow = await isFollower(followerId, followingId)
+  const follower = await isFollower(followerId, followingId)
 
-  switch (isFollow) {
+  switch (follower) {
     case false:
       await followAUser(followerId, followingId)
-      return `Ahora siques al usuario ${followingId}`
+      return `Ahora sigues al usuario ${followingId}`
 
     case true:
       await unfollowAUser(followerId, followingId)
-      return `Ahora ya no siques al usuario ${followingId}`
+      return `Ahora ya no sigues al usuario ${followingId}`
   }
 }
