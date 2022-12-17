@@ -33,6 +33,6 @@ describe("Auth Routes test", () => {
 
     expect(res.status).toEqual(200)
     expect(res.headers["content-type"]).toContain("application/json")
-    expect(res.body.token).toContain("Bearer")
+    expect(res.body.token).toMatch(/^Bearer\s/)
   })
 })
