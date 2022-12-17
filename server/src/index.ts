@@ -6,7 +6,7 @@ app.listen(PORT, () => {
   console.log(
     "Server corriendo desde en: " +
       colorizeText(
-        `${Number.parseInt(PORT) === 4001 ? "http://localhost:" + PORT : PORT}`,
+        `${Number.parseInt(PORT) === 4002 ? "http://localhost:" + PORT : PORT}`,
         "yellow"
       )
   )

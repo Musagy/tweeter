@@ -6,17 +6,17 @@ import { handleHttp } from "../utils/errorHandle"
 /**
  * Esta funcion es un toggle cuando el usuario sigue a alguien lo ya no lo seguira, y si no lo sigue lo reguira
  */
-export const toggleFollow: RequestHandler = async ({ body }, res) => {
+export const toggleFollow: RequestHandler = async ({ body, params }, res) => {
   try {
     // const followerId = <String>body["followerId"]
     const followerId = <String>body["user"]
-    const followingId = <String>body["followTo"]
+    const followingId = <String>params["user"]
 
-    const newState = await FollowServices.toggleFollow(followerId, followingId)
-    if (newState == "No se pudo hacer la accion por falta de datos")
-      res.status(400).send(newState)
+    const message = await FollowServices.toggleFollow(followerId, followingId)
+    if (message == "No se pudo hacer la accion por falta de datos")
+      res.status(400).send(message)
 
-    res.status(200).send(newState)
+    res.status(200).json({message})
   } catch (e) {
     handleHttp(res, "No se pudo cambiar el estado de seguimiento", e)
   }

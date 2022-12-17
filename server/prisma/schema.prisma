@@ -25,6 +25,7 @@ model Users {
   following  Follows[]  @relation("follower")    
   
   favorites  Likes[]
+  saves      Saves[]
 }
 
 model Follows {
@@ -39,16 +40,44 @@ model Follows {
 }
 
 model Posts {
-  id           Int          @default(autoincrement()) @id
-  createdAt    DateTime     @default(now())
+  id           Int         @default(autoincrement()) @id
+  createdAt    DateTime    @default(now())
   content      String?
-  published    Boolean      @default(true)
-  author       Users        @relation(fields: [authorId], references: [id])
+  public       Boolean     @default(true)
+
+  author       Users       @relation(fields: [authorId], references: [id])
   authorId     Int
+
   favorites    Likes[]
+  saves        Saves[]
+
+  parent       Replies?    @relation("parent")
+  replies      Replies[]   @relation("reply")
+}
+
+model Replies {
+  parent    Posts     @relation("parent", fields: [parentId], references: [id])
+  parentId  Int       @unique
+  reply     Posts     @relation("reply", fields: [replyId], references: [id])
+  replyId   Int
+
+  createdAt    DateTime  @default(now())
+
+  @@id([replyId, parentId])
 }
 
 model Likes {
+  user       Users     @relation(fields: [userId], references: [id])
+  userId     Int
+  post       Posts     @relation(fields: [postId], references: [id])
+  postId     Int
+
+  createdAt  DateTime  @default(now())
+
+  @@id([userId, postId])
+}
+
+model Saves {
   user       Users     @relation(fields: [userId], references: [id])
   userId     Int
   post       Posts     @relation(fields: [postId], references: [id])

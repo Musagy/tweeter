@@ -5,6 +5,6 @@ import { checkJwt } from "../middleware/session";
 
 const router = Router();
 
-router.post("/follow", checkJwt, followCtrl.toggleFollow)
+router.post("/follow/:user", checkJwt, followCtrl.toggleFollow)
 
 export {router};

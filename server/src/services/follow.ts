@@ -6,14 +6,9 @@ const prisma = new PrismaClient()
 /**
  * Esto Retorna si un usuario sigue a alguien por ID
  */
-export const isFollower = async (followerId: string, followingId: string) => {
+export const isFollower = async (followerId: number, followingId: number) => {
   const isFollowingHim = await prisma.follows.findUnique({
-    where: {
-      followerId_followingId: {
-        followerId: +followerId,
-        followingId: +followingId,
-      },
-    },
+    where: { followerId_followingId: { followerId, followingId } },
   })
 
   return !!isFollowingHim
@@ -22,9 +17,9 @@ export const isFollower = async (followerId: string, followingId: string) => {
 /**
  * Esto crea un nuevo enlace de seguidor al que quiere seguir
  */
-export const followAUser = async (followerId: string, followingId: string) => {
+export const followAUser = async (followerId: number, followingId: number) => {
   const newFollowUp = await prisma.follows.create({
-    data: { followerId: +followerId, followingId: +followingId },
+    data: { followerId, followingId },
   })
 
   return newFollowUp
@@ -34,24 +29,23 @@ export const followAUser = async (followerId: string, followingId: string) => {
  * Esto elimina un enlace de seguiento de un usuario a otro
  */
 export const unfollowAUser = async (
-  followerId: string,
-  followingId: string
+  followerId: number,
+  followingId: number
 ) => {
   const unfollowData = await prisma.follows.delete({
-    where: {
-      followerId_followingId: {
-        followerId: +followerId,
-        followingId: +followingId,
-      },
-    },
+    where: { followerId_followingId: { followerId, followingId } },
   })
 
   return unfollowData
 }
 
-export const toggleFollow = async (followerId: String, followingId: String) => {
-  if (!followerId || !followingId)
+/**
+ * Servicio para seguir a un usuario o si lo sigues lo dejara de subir
+ */
+export const toggleFollow = async (FollowerId: String, FollowingId: String) => {
+  if (!FollowerId || !FollowingId)
     return "No se pudo hacer la accion por falta de datos"
+  const [followerId, followingId] = [+FollowerId, +FollowingId]
 
   const follower = await isFollower(followerId, followingId)
 
