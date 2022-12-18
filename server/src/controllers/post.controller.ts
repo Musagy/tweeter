@@ -4,26 +4,35 @@ import { String } from "../interfaces/typeNullable"
 import * as PostServices from "../services/post"
 import { handleHttp } from "../utils/errorHandle"
 import { propsToObjs } from "../utils/propsToObjs"
+import { NextFunction, Request, Response } from "express"
 
 /**
  * Esta funcion creara un post el servicio de post
  */
-export const createPost: RequestHandler = async (req, res) => {
+export const createPost = async (
+  { body }: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const authorId = +req.body.user
+    const authorId = +body.user
 
     const resPost = await PostServices.createPost({
       authorId,
-      content: req.body.content,
+      content: body.content,
     })
 
     // Si responde un string es porque le mando el texto de error
     if (typeof resPost == "string") res.status(400).send(resPost)
-
-    res.status(200).json({
-      message: "Post creado",
-      post: resPost,
-    })
+    if (body.parentId) {
+      body.post = resPost
+      next()
+    } else {
+      res.status(200).json({
+        message: "Post creado",
+        post: resPost,
+      })
+    }
   } catch (e) {
     handleHttp(res, "No se pudo crear el post", e)
   }
@@ -32,9 +41,9 @@ export const createPost: RequestHandler = async (req, res) => {
 /**
  * Este controlador va a pasar el numero de posts que tiene un usuario
  */
-export const countMyPosts: RequestHandler = async (req, res) => {
+export const countMyPosts: RequestHandler = async ({ body }, res) => {
   try {
-    const authorId = +req.body.user
+    const authorId = +body.user
     const resCount = await PostServices.getPostsCount(authorId)
     res.status(200).json({ count: resCount })
   } catch (e) {
@@ -45,9 +54,9 @@ export const countMyPosts: RequestHandler = async (req, res) => {
 /**
  * Controlador que retornara una lista de post destacados
  */
-export const getFeed: RequestHandler = async (req, res) => {
+export const getFeed: RequestHandler = async ({ query }, res) => {
   try {
-    const [page, take] = propsToObjs(req.query, ["page", "take"])
+    const [page, take] = propsToObjs(query, ["page", "take"])
 
     // Esta parte de codigo determinara una fecha de los posts mas destacados la ultima hora
     const previous = new Date()
@@ -78,7 +87,7 @@ export const getPostsByUserId: RequestHandler = async (
   try {
     const userId = params.id
     const [page, take] = propsToObjs(query, ["page", "take"])
-    
+
     const posts = await PostServices.getPostPage({
       ...page,
       ...take,

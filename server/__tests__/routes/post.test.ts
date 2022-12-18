@@ -27,14 +27,14 @@ describe("Post Routes test", () => {
 
   test("should get my posts", async () => {
     const userId = 126
-    const res = await API.post(`/post/userId/${userId}`)
+    const res = await API.get(`/post/userId/${userId}`)
     expect(res.status).toBe(200)
     expect(res.body).toHaveLength(1)
     expect(res.body[0].content).toContain("Post del usuario de ID 3")
   })
 
   test("should get a post", async () => {
-    const res = await API.post("/post/12")
+    const res = await API.get("/post/12")
     expect(res.status).toBe(200)
     expect(res.body.content).toContain("Primer Post")
   })
@@ -42,7 +42,7 @@ describe("Post Routes test", () => {
   test("should edit a post", async () => {
     const { userToken } = await userTestWithPostCount()
     const postToEdit = 25
-    const { _body: post }: any = await API.post(`/post/${postToEdit}`)
+    const { _body: post }: any = await API.get(`/post/${postToEdit}`)
     const editNumber = +post.content.split("°").at(-1) + 1
     const content = `post editado N°${editNumber}`
     const res = await API.put(`/post/${postToEdit}`)

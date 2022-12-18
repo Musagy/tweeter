@@ -51,15 +51,15 @@ model Posts {
   favorites    Likes[]
   saves        Saves[]
 
-  parent       Replies?    @relation("parent")
-  replies      Replies[]   @relation("reply")
+  parent       Replies?    @relation("reply")
+  replies      Replies[]   @relation("parent")
 }
 
 model Replies {
   parent    Posts     @relation("parent", fields: [parentId], references: [id])
-  parentId  Int       @unique
+  parentId  Int
   reply     Posts     @relation("reply", fields: [replyId], references: [id])
-  replyId   Int
+  replyId   Int       @unique
 
   createdAt    DateTime  @default(now())
 
