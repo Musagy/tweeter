@@ -5,6 +5,7 @@ import * as PostServices from "../services/post"
 import { handleHttp } from "../utils/errorHandle"
 import { propsToObjs } from "../utils/propsToObjs"
 import { NextFunction, Request, Response } from "express"
+import * as TagServices from "../services/tag"
 
 /**
  * Esta funcion creara un post el servicio de post
@@ -17,22 +18,29 @@ export const createPost = async (
   try {
     const authorId = +body.user
 
-    const resPost = await PostServices.createPost({
+    let post: any = await PostServices.createPost({
       authorId,
       content: body.content,
     })
 
     // Si responde un string es porque le mando el texto de error
-    if (typeof resPost == "string") res.status(400).send(resPost)
+    if (typeof post == "string") res.status(400).send(post)
+
+    // setea los tags
+    const tags = await TagServices.setPostTags(body.content, post.id)
+    if (tags !== null) post = await PostServices.getPostById(`${post.id}`)
+
+    // se ejecuta si es una respuesta a un post
     if (body.parentId) {
-      body.post = resPost
-      next()
-    } else {
-      res.status(200).json({
-        message: "Post creado",
-        post: resPost,
-      })
+      body.post = post
+      return next()
     }
+
+    // returna las respuesta normal
+    return res.status(200).json({
+      message: "Post creado",
+      post: { ...post },
+    })
   } catch (e) {
     handleHttp(res, "No se pudo crear el post", e)
   }

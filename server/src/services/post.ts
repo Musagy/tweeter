@@ -4,9 +4,7 @@ import { String } from "../interfaces/typeNullable"
 const prisma = new PrismaClient()
 
 export const createPost = async (post: Prisma.PostsUncheckedCreateInput) => {
-  return await prisma.posts.create({
-    data: { ...post },
-  })
+  return await prisma.posts.create({ data: { ...post } })
 }
 export const getPostsCount = async (authorId: number) => {
   const res = await prisma.posts.count({
@@ -61,13 +59,41 @@ export const getPostPage = async ({
   return res
 }
 
+const bottomBarInfoQuery = {
+  select: {
+    favorites: true,
+    replies: true,
+    saves: true,
+    // retweets: true
+  },
+}
 export const getPostById = async (userId: string) => {
   const res = await prisma.posts.findUnique({
     where: { id: +userId },
     include: {
-      _count: {
+      _count: bottomBarInfoQuery,
+      author: {
+        select: { username: true },
+      },
+      tags: {
         select: {
-          replies: true,
+          tagId: true
+        }
+      },
+      replies: {
+        take: 3,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          reply: {
+            include: {
+              author: {
+                select: { username: true },
+              },
+              _count: bottomBarInfoQuery,
+            },
+          },
         },
       },
     },

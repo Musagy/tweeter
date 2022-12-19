@@ -53,6 +53,8 @@ model Posts {
 
   parent       Replies?    @relation("reply")
   replies      Replies[]   @relation("parent")
+
+  tags         PostTag[]
 }
 
 model Replies {
@@ -88,6 +90,22 @@ model Saves {
   @@id([userId, postId])
 }
 
+model Tags {
+  id     String     @id
+
+  posts  PostTag[]
+}
+
+model PostTag {
+  post       Posts      @relation(fields: [postId], references: [id])
+  postId     Int
+  tag        Tags       @relation(fields: [tagId], references: [id])
+  tagId      String
+  
+  createdAt  DateTime  @default(now())
+
+  @@id([postId, tagId])
+}
 
 enum Role {
   USER
