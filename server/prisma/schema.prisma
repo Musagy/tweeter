@@ -47,25 +47,19 @@ model Posts {
 
   author       Users       @relation(fields: [authorId], references: [id])
   authorId     Int
+  
+  parent       Posts?    @relation("reply", fields: [parentId], references: [id])
+  parentId     Int? 
+  replies      Posts[]   @relation("reply")
+
+  retweeting   Posts?      @relation("Retweet", fields: [retweetId], references: [id])
+  retweetId    Int?         
+  retweets     Posts[]     @relation("Retweet")
 
   favorites    Likes[]
   saves        Saves[]
-
-  parent       Replies?    @relation("reply")
-  replies      Replies[]   @relation("parent")
-
   tags         PostTag[]
-}
-
-model Replies {
-  parent    Posts     @relation("parent", fields: [parentId], references: [id])
-  parentId  Int
-  reply     Posts     @relation("reply", fields: [replyId], references: [id])
-  replyId   Int       @unique
-
-  createdAt    DateTime  @default(now())
-
-  @@id([replyId, parentId])
+  
 }
 
 model Likes {
@@ -106,6 +100,15 @@ model PostTag {
 
   @@id([postId, tagId])
 }
+
+// model Retweets {
+//   retweeter     Posts     @relation("retweeter", fields: [retweeterId], references: [id])
+//   retweeterId   Int
+//   retweeting    Posts     @relation("retweeting", fields: [retweetingId], references: [id])
+//   retweetingId  Int
+
+//   @@id([retweeterId, retweetingId])
+// }
 
 enum Role {
   USER

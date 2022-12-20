@@ -16,10 +16,10 @@ describe("Creación de nuevos posts", () => {
       .send({ content: `respuesta de test N°${replyNumber}`, parentId: "12" })
       .set("Authorization", `Bearer ${userToken}`)
 
-    // Verificar que la respuesta tenga estado 200
+    // Verificar que la respuesta tenga estado 201
     expect(res.status).toBe(200)
-    expect(res.body.message).toBe("Respuesta creada")
-    expect(res.body.post.id).toBeDefined()
+    expect(res.body.message).toBe("Post creado")
+    expect(res.body.post.parentId).toBe(12)
     expect(res.body.post.content).toBe(`respuesta de test N°${replyNumber}`)
   })
 })

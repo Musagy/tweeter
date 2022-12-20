@@ -77,8 +77,8 @@ export const getPostById = async (userId: string) => {
       },
       tags: {
         select: {
-          tagId: true
-        }
+          tagId: true,
+        },
       },
       replies: {
         take: 3,
@@ -86,14 +86,26 @@ export const getPostById = async (userId: string) => {
           createdAt: "desc",
         },
         include: {
-          reply: {
-            include: {
-              author: {
-                select: { username: true },
-              },
-              _count: bottomBarInfoQuery,
-            },
+          author: {
+            select: { username: true },
           },
+          _count: bottomBarInfoQuery,
+        },
+      },
+      retweeting: {
+        include: {
+          author: {
+            select: { username: true },
+          },
+          _count: bottomBarInfoQuery,
+        },
+      },
+      retweets: {
+        include: {
+          author: {
+            select: { username: true },
+          },
+          _count: bottomBarInfoQuery,
         },
       },
     },

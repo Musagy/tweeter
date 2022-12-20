@@ -4,23 +4,21 @@ import { String } from "../interfaces/typeNullable"
 import * as PostServices from "../services/post"
 import { handleHttp } from "../utils/errorHandle"
 import { propsToObjs } from "../utils/propsToObjs"
-import { NextFunction, Request, Response } from "express"
 import * as TagServices from "../services/tag"
 
 /**
  * Esta funcion creara un post el servicio de post
  */
-export const createPost = async (
-  { body }: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createPost: RequestHandler = async ({ body }, res) => {
   try {
     const authorId = +body.user
+    const [retweet, reply] = propsToObjs(body, ["retweetId", "parentId"])
 
     let post: any = await PostServices.createPost({
       authorId,
       content: body.content,
+      ...retweet,
+      ...reply,
     })
 
     // Si responde un string es porque le mando el texto de error
@@ -30,14 +28,8 @@ export const createPost = async (
     const tags = await TagServices.setPostTags(body.content, post.id)
     if (tags !== null) post = await PostServices.getPostById(`${post.id}`)
 
-    // se ejecuta si es una respuesta a un post
-    if (body.parentId) {
-      body.post = post
-      return next()
-    }
-
     // returna las respuesta normal
-    return res.status(200).json({
+    res.status(200).json({
       message: "Post creado",
       post: { ...post },
     })
