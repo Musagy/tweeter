@@ -16,7 +16,7 @@ export const registerNewUser = async ({
   const usernameExists = await prisma.users.findUnique({ where: { username } })
   if (usernameExists) return "Username en uso"
 
-  const passHash = await encrypt(password)
+  const passHash = await encrypt(`${password}`)
   const newUser = await prisma.users.create({
     data: {
       username,
@@ -25,8 +25,13 @@ export const registerNewUser = async ({
       password: passHash,
     },
   })
+  const token = generateToken(`${newUser.id}`)
 
-  return newUser
+  return {
+    message: "Cuenta creada",
+    token: "Bearer " + token,
+    user: newUser,
+  }
 }
 
 export const loginUser = async ({
@@ -37,16 +42,19 @@ export const loginUser = async ({
   password: string
 }) => {
   if (!usernameOrEmail || !password) return "Usuario o contraseña incorrecta"
-  const [ checkIs ] = await prisma.users.findMany({
+  const [checkIs] = await prisma.users.findMany({
     where: {
       OR: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     },
   })
   if (!checkIs) return "Usuario o contraseña incorrecta"
+
   const isCorrect = await verified(password, checkIs.password)
   if (!isCorrect) return "Usuario o contraseña incorrecta"
+
   const token = generateToken(`${checkIs.id}`)
   const data = {
+    message: "Logeado",
     token: "Bearer " + token,
     user: checkIs,
   }

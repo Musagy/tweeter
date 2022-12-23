@@ -7,7 +7,9 @@ import { router } from "./router"
 const app = express()
 
 // server config
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:3000"
+}))
 app.use(express.json())
 
 // server router
