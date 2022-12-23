@@ -9,3 +9,6 @@ export interface LoginResponse {
   token: string
   user: Users | null
 }
+export interface FormData {
+  [key: string]: any
+}
