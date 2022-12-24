@@ -29,5 +29,5 @@
 </script>
 
 <style scoped>
-  @import url(./LoginForm.css);
+  @import url(./Form.css);
 </style>
