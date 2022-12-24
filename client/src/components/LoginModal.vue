@@ -11,7 +11,7 @@
     </p>
     <Form type-form="signin" :inputs="signIn" />
     <p class="register">
-      No tienes cuenta. <a href="" target="">Regístrate</a>
+      No tienes cuenta. <router-link to="/register"> Regístrate </router-link>
     </p>
     <footer>
       <p>
@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
-  import Form from './Form.vue';
-  import {signIn} from "../utils/signForms"
+  import Form from "./Form.vue"
+  import { signIn } from "../utils/signForms"
 </script>
 
 <style scoped>
-  @import url(LoginForm.css);
+  @import url(./LoginForm.css);
 </style>

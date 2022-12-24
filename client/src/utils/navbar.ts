@@ -1,14 +1,48 @@
-import { useRoute } from "vue-router"
+// import { useRouter } from "vue-router"
+import { useAuthStore } from "../store/useAuthStore"
 
-const router = useRoute()
+export type btn = {
+  icon?: string
+  title: string
+  handler: (() => void | string) | string
+  disabled?: boolean
+}
 
-export const mainMenu = []
-
-export const userMenu = [
+export const mainMenu: btn[] = [
   {
-    name: "Mi Perfil",
-    handler() {
-      // router.name("")
-    }
-  }
+    title: "Inicio",
+    handler: "/",
+  },
+  {
+    title: "Explorar",
+    handler: "/search",
+  },
+  {
+    title: "Marcadores",
+    handler: "/save",
+  },
+]
+
+export const userMenu: btn[] = [
+  {
+    title: "Mi Perfil",
+    icon: "account_circle",
+    handler: "/user/",
+  },
+  {
+    title: "Chat Grupal",
+    icon: "group",
+    handler: "/chat",
+    disabled: true,
+  },
+  {
+    title: "Ajustes",
+    icon: "settings",
+    handler: "/settings",
+  },
+  {
+    title: "Cerrar Sección",
+    icon: "logout",
+    handler: () => useAuthStore().logout(),
+  },
 ]

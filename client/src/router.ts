@@ -4,6 +4,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 import Home from "./pages/Home.vue"
 import Login from "./pages/Login.vue"
 import Register from "./pages/Register.vue"
+import User from "./pages/user/[id].vue"
+import Settings from "./pages/Settings.vue"
 
 const routes: Readonly<RouteRecordRaw[]> = [
   { path: "/", component: Home, name: "Home", meta: { reqAuth: true } },
@@ -14,6 +16,8 @@ const routes: Readonly<RouteRecordRaw[]> = [
     name: "Register",
     meta: { reqAuth: false },
   },
+  { path: "/user/:id", component: User, name: "User" },
+  { path: "/settings", component: Settings, name: "Settings" },
 ]
 
 const router = createRouter({
@@ -26,7 +30,7 @@ router.beforeEach(to => {
   if (!user && to.meta.reqAuth) {
     return { name: "Login" }
   }
-  if (user && !to.meta.reqAuth) {
+  if (user && to.meta.reqAuth === false) {
     return { name: "Home" }
   }
 })

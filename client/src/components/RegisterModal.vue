@@ -10,7 +10,7 @@
     </p>
     <Form type-form="signup" :inputs="signUp" />
     <p class="register">
-      No tienes cuenta. <a href="" target="">Regístrate</a>
+      Tienes cuenta. <router-link to="/login"> Inicie sección </router-link>
     </p>
     <footer>
       <p>
@@ -23,10 +23,10 @@
 </template>
 
 <script setup lang="ts">
-  import Form from './Form.vue';
-  import {signUp} from "../utils/signForms"
+  import Form from "./Form.vue"
+  import { signUp } from "../utils/signForms"
 </script>
 
 <style scoped>
-  @import url(LoginForm.css);
+  @import url(./LoginForm.css);
 </style>

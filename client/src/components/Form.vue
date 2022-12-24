@@ -66,18 +66,6 @@
 </script>
 
 <style scoped>
-  h1 {
-    font-family: Noto Sans;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 25px;
-    letter-spacing: -0.035em;
-    text-align: left;
-    margin-top: 27px;
-  }
-  p {
-    margin-top: 15px;
-  }
   form {
     display: flex;
     flex-direction: column;
