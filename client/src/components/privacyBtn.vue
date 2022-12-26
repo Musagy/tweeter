@@ -36,7 +36,7 @@
   const isPublic = ref(true)
 
   const emit = defineEmits<{
-    (e: "setPublic", valeu: boolean): void
+    (e: "setPublic", value: boolean): void
   }>()
 
   watch(

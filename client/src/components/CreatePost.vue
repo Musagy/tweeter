@@ -4,12 +4,7 @@
     <hr />
     <form class="form-ctn" @submit.prevent="handlerSubmit">
       <img :src="photo" alt="profile-image" />
-      <textarea
-        placeholder="¿Qué está pasando?"
-        @input="resize()"
-        v-model="content"
-        ref="textarea"
-      />
+      <PostContentInput @setContent="setContent" />
       <div class="post-setting">
         <div class="post-custom">
           <button @click="addImage">
@@ -24,18 +19,10 @@
 </template>
 
 <script setup lang="ts">
-  import axios from "axios"
   import { Ref, ref } from "vue"
-  import { useToast } from "vue-toastification"
   import PrivacyBtn from "./privacyBtn.vue"
   import * as PostQueries from "../utils/postQueries"
-
-  // TextArea auto-resize
-  let textarea = <Ref<HTMLTextAreaElement>>ref()
-  const resize = () => {
-    textarea.value.style.height = "18px"
-    textarea.value.style.height = textarea.value.scrollHeight + "px"
-  }
+  import PostContentInput from "./postContentInput.vue"
 
   // Obteniendo a user del local storage
   const userRaw = <string>localStorage.getItem("user")
@@ -47,12 +34,11 @@
 
   // Referencia del contenido del post
   const content = ref("")
-
+  const isPublic = ref(true)
   const addImage = () => {}
 
-  const isPublic = ref(true)
-
   const setPublic = (value: boolean) => (isPublic.value = value)
+  const setContent = (value: string) => (content.value = value)
 
   const handlerSubmit = async () => PostQueries.createPost(content, isPublic)
 </script>
@@ -87,24 +73,6 @@
     height: 40px;
     filter: invert(1);
     border-radius: 8px;
-  }
-
-  textarea {
-    font-family: Noto Sans;
-    font-size: 16px;
-    font-weight: 500;
-
-    width: 100%;
-    border: none;
-
-    border-radius: 10px;
-    resize: none;
-  }
-  textarea:focus {
-    outline: none;
-  }
-  textarea::-webkit-scrollbar {
-    width: 0;
   }
   .post-setting {
     font-family: Noto Sans;
