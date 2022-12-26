@@ -6,6 +6,8 @@ import Login from "./pages/Login.vue"
 import Register from "./pages/Register.vue"
 import User from "./pages/user/[id].vue"
 import Settings from "./pages/Settings.vue"
+import Search from "./pages/Search.vue"
+import Save from "./pages/Save.vue"
 
 const routes: Readonly<RouteRecordRaw[]> = [
   { path: "/", component: Home, name: "Home", meta: { reqAuth: true } },
@@ -18,6 +20,18 @@ const routes: Readonly<RouteRecordRaw[]> = [
   },
   { path: "/user/:id", component: User, name: "User" },
   { path: "/settings", component: Settings, name: "Settings" },
+  {
+    path: "/search",
+    component: Search,
+    name: "Search",
+    meta: { reqAuth: true },
+  },
+  {
+    path: "/save",
+    component: Save,
+    name: "Save",
+    meta: { reqAuth: true },
+  },
 ]
 
 const router = createRouter({

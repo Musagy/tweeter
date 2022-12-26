@@ -12,13 +12,18 @@ import * as TagServices from "../services/tag"
 export const createPost: RequestHandler = async ({ body }, res) => {
   try {
     const authorId = +body.user
-    const [retweet, reply] = propsToObjs(body, ["retweetId", "parentId"])
+    const [retweet, reply, isPublic] = propsToObjs(body, [
+      "retweetId",
+      "parentId",
+      "public",
+    ])
 
     let post: any = await PostServices.createPost({
       authorId,
       content: body.content,
       ...retweet,
       ...reply,
+      public: Boolean(isPublic?.public),
     })
 
     // Si responde un string es porque le mando el texto de error

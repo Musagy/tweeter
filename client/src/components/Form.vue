@@ -56,9 +56,8 @@
 
       router.push("/")
     } catch (err: any) {
-      console.error(err)
       if (err.response.data) {
-        errHandler.value = err.response["data"]
+        errHandler.value = err.response.data.error
         toast.error(errHandler.value)
       }
     }

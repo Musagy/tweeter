@@ -1,19 +1,26 @@
 <template>
   <NavComp />
-  <main>
+  <div class="ctn" :style="style">
     <slot />
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
-import NavComp from "./Nav.vue"
+  import { StyleValue } from "vue"
+  import NavComp from "./Nav.vue"
+  const { top } = defineProps<{
+    top?: string
+    style: StyleValue
+  }>()
+  const padding = 68 + (top ? Number.parseInt(top) : 0) + "px"
 </script>
 
 <style scoped>
-main {
-  background: #f2f2f2;
-  width: 100%;
-  min-height: calc(100vh - 68px);
-  padding-top: 68px;
-}
+  .ctn {
+    background: #f2f2f2;
+    width: 100%;
+    min-height: calc(100vh - v-bind("padding"));
+    padding-top: v-bind("padding");
+    display: flex;
+  }
 </style>
