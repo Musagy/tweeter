@@ -24,11 +24,13 @@ export const getPostPage = async ({
   page = 1,
   take = 15,
   orderByExt = { favorites: { _count: "desc" } },
+  additionalIncludes,
 }: {
   orderByExt?: Prisma.PostsOrderByWithRelationInput
   where?: Prisma.PostsWhereInput
   page?: number
   take?: number
+  additionalIncludes?: Prisma.PostsInclude
 }) => {
   const skip = (page - 1) * 15
 
@@ -41,6 +43,14 @@ export const getPostPage = async ({
         id: true,
       },
     },
+    _count: {
+      select: {
+        replies: true,
+        retweets: true,
+        saves: true,
+      },
+    },
+    ...additionalIncludes,
   }
 
   // Settear como se ordenaran los posts
@@ -55,8 +65,8 @@ export const getPostPage = async ({
     orderBy,
     skip,
   }
-  const res = await prisma.posts.findMany(config)
-  return res
+
+  return await prisma.posts.findMany(config)
 }
 
 const bottomBarInfoQuery = {

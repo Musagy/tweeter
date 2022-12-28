@@ -5,7 +5,7 @@ import { checkJwt } from "../middleware/session"
 const router = Router()
 
 router.post("/create", checkJwt, postCtrl.createPost)
-router.get("/feed", postCtrl.getFeed)
+router.post("/feed", checkJwt, postCtrl.getFeed)
 
 router.post("/count/me", checkJwt, postCtrl.countMyPosts)
 

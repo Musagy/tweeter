@@ -59,24 +59,53 @@ export const countMyPosts: RequestHandler = async ({ body }, res) => {
 /**
  * Controlador que retornara una lista de post destacados
  */
-export const getFeed: RequestHandler = async ({ query }, res) => {
+export const getFeed: RequestHandler = async ({ query, body }, res) => {
   try {
+    console.log("hola chupapis")
     const [page, take] = propsToObjs(query, ["page", "take"])
+    const userId = +body.user
+
+    // includes necesarios para la info de las interacciones que tuvo el usuario con los posts
+
+    const include: Prisma.PostsInclude = {
+      favorites: {
+        where: {
+          userId: {
+            equals: userId,
+          },
+        },
+      },
+      retweets: {
+        where: {
+          authorId: {
+            equals: userId,
+          },
+        },
+      },
+      saves: {
+        where: {
+          userId: {
+            equals: userId,
+          },
+        },
+      },
+    }
 
     // Esta parte de codigo determinara una fecha de los posts mas destacados la ultima hora
     const previous = new Date()
-    previous.setHours(previous.getHours() - 1)
+    const gte = new Date(previous.setMonth(previous.getMonth() - 1))
     const feedConfig: Prisma.PostsWhereInput = {
       createdAt: {
-        gte: previous,
+        gte,
       },
     }
     const posts = await PostServices.getPostPage({
       ...page,
       ...take,
       where: feedConfig,
+      additionalIncludes: include,
     })
-    res.status(200).json(posts)
+    res.status(200).json({ message: `Pagina ${page?.page} de feed`, posts })
   } catch (e) {
     handleHttp(res, "No se pudo obtener los posts", e)
   }

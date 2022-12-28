@@ -1,9 +1,6 @@
 <template>
   <button class="user btn-without-styles" @focus="showMenu" @blur="hideMenu">
-    <img
-      src="https://osu.ppy.sh/images/layout/avatar-guest@2x.png"
-      alt="profile-image"
-    />
+    <Avatar userId="user" />
     <h2>{{ user?.name }}</h2>
     <img src="/arrow.svg" alt="arrow" />
   </button>
@@ -34,6 +31,7 @@
   import { useAuthStore } from "../store/useAuthStore"
   import { storeToRefs } from "pinia"
   import { ref } from "vue"
+  import Avatar from "./Avatar.vue"
 
   const authStore = useAuthStore()
   const { user } = storeToRefs(authStore)

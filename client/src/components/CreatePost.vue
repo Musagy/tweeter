@@ -3,7 +3,7 @@
     <h2>Tweetea algo</h2>
     <hr />
     <form class="form-ctn" @submit.prevent="handlerSubmit">
-      <img :src="photo" alt="profile-image" />
+      <Avatar userId="user" />
       <PostContentInput @setContent="setContent" />
       <div class="post-setting">
         <div class="post-custom">
@@ -19,18 +19,18 @@
 </template>
 
 <script setup lang="ts">
-  import { Ref, ref } from "vue"
-  import PrivacyBtn from "./privacyBtn.vue"
+  import { ref } from "vue"
+  import PrivacyBtn from "./PrivacyBtn.vue"
+  import PostContentInput from "./PostContentInput.vue"
   import * as PostQueries from "../utils/postQueries"
-  import PostContentInput from "./postContentInput.vue"
+  import Avatar from "./Avatar.vue"
 
-  // Obteniendo a user del local storage
-  const userRaw = <string>localStorage.getItem("user")
-
-  // Obteniendo foto
-  const photo =
-    JSON.parse(userRaw).photo ||
-    "https://osu.ppy.sh/images/layout/avatar-guest@2x.png"
+  const { additionalContent } = defineProps<{
+    additionalContent?: {
+      parentId?: number
+      retweetId?: number
+    }
+  }>()
 
   // Referencia del contenido del post
   const content = ref("")
@@ -40,7 +40,8 @@
   const setPublic = (value: boolean) => (isPublic.value = value)
   const setContent = (value: string) => (content.value = value)
 
-  const handlerSubmit = async () => PostQueries.createPost(content, isPublic)
+  const handlerSubmit = async () =>
+    PostQueries.createPost(content, isPublic, additionalContent)
 </script>
 
 <style scoped>
