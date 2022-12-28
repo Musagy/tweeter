@@ -13,9 +13,8 @@
     <div class="post-interactions__ctn">
       <InteractionBtn
         v-for="interaction in interactions"
-        :initState="false"
         :interaction="interaction"
-        :postId="post.id"
+        :post="post"
       />
     </div>
     <hr />

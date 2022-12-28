@@ -146,6 +146,26 @@ export const editPostById = async ({
   }
 }
 
+export const deletePostById = async ({
+  postId,
+  userId,
+}: {
+  userId: string
+  postId: string
+}) => {
+  const isYourPost = await verifyAuthority(postId, `${userId}`)
+  if (isYourPost) {
+    await prisma.posts.delete({
+      where: {
+        id: +postId,
+      },
+    })
+    return "Post Eliminado"
+  } else {
+    return "No eres el dueño del post"
+  }
+}
+
 export const verifyAuthority = async (postId: string, userId: string) => {
   const post = await getPostById(postId)
   if (post === null || post?.authorId !== +userId) return false

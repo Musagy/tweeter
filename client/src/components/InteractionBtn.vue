@@ -1,12 +1,5 @@
 <template>
-  <button
-    @click="
-      () => {
-        interaction.handler(postId)
-      }
-    "
-    :class="{ active: isActive }"
-  >
+  <button @click="handler" :class="{ active: isActive }">
     <span class="material-symbols-outlined"> {{ interaction.icon }} </span>
     {{ interaction.title }}
   </button>
@@ -14,14 +7,38 @@
 
 <script setup lang="ts">
   import { ref } from "vue"
+  import { Post } from "../types/Model"
   import { Interaction } from "../utils/postInteractions"
-  const { interaction, initState } = defineProps<{
+  const { interaction, post } = defineProps<{
     interaction: Interaction
-    initState: boolean
-    postId: number
+    // initState: boolean
+    post: Post
   }>()
 
-  const isActive = ref(initState)
+  const isActive = ref(
+    interaction.postRef === undefined
+      ? false
+      : !!post[interaction.postRef].length
+  )
+  const retweetId = ref(
+    interaction.postRef === "retweets" && post.retweets.length
+      ? post.retweets[0].id
+      : 0
+  )
+
+  const handler = async () => {
+    if (interaction.postRef !== "retweets") {
+      interaction.handler(post.id)
+    } else {
+      const newRetweetId = await (<Promise<number>>(
+        interaction.handler(post.id, retweetId.value)
+      ))
+      if (newRetweetId !== undefined) {
+        retweetId.value = newRetweetId
+      }
+    }
+    isActive.value = !isActive.value
+  }
 </script>
 
 <style scoped>

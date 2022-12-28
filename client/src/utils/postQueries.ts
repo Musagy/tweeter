@@ -31,7 +31,6 @@ export const createPost = async (
     if (status !== 200) return toast.error(data.response.data.error)
     // si todo sale bien
     toast(data.message)
-    console.log(data)
     content.value = ""
   } catch (err: any) {
     toast.error(err.response.data.error)
@@ -46,7 +45,6 @@ export const postsOfFYP = async (page: number = 1): Promise<Post[] | []> => {
       {},
       { headers: { Authorization } }
     )
-    console.log(newPost)
 
     return newPost.data.posts
   } catch (err: any) {

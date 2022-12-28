@@ -5,7 +5,7 @@ describe("Save Routes test", () => {
     const { userToken } = await userTest()
     const postId = "12"
 
-    const res = await API.post(`/save/${postId}`)
+    const res = await API.get(`/save/${postId}`)
       .set("Authorization", userToken)
       .send()
 

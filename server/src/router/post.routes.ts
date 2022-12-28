@@ -13,6 +13,7 @@ router.get("/userId/:id", postCtrl.getPostsByUserId)
 router.get("/:id", postCtrl.getPostById)
 
 router.put("/:id", checkJwt, postCtrl.editPostById)
+router.delete("/:id", checkJwt, postCtrl.deletePostById)
 
 router.get("/search/:content", postCtrl.searchPost)
 

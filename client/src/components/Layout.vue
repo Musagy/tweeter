@@ -26,5 +26,6 @@
     min-height: calc(100vh - v-bind("padding"));
     padding-top: v-bind("padding");
     display: flex;
+    padding-bottom: 40px;
   }
 </style>

@@ -166,6 +166,21 @@ export const editPostById: RequestHandler = async ({ params, body }, res) => {
     handleHttp(res, "No se pudo editar el posts", e)
   }
 }
+export const deletePostById: RequestHandler = async ({ params, body }, res) => {
+  try {
+    const postId = params.id
+    const [user] = propsToObjs(body, ["user"], false)
+    const message = await PostServices.deletePostById({
+      postId,
+      userId: `${user?.user}`,
+    })
+    message === "No eres el dueño del post"
+      ? res.status(400).send(message)
+      : res.status(200).json({ message })
+  } catch (e) {
+    handleHttp(res, "No se pudo editar el posts", e)
+  }
+}
 
 export const searchPost: RequestHandler = async ({ query, params }, res) => {
   try {

@@ -25,6 +25,15 @@ export type Post = {
     favorites: number
     replies: number
     saves: number
-    retweets:number
+    retweets: number
   }
+  favorites: {
+    userId: number
+  }[]
+  retweets: {
+    id: number
+  }[]
+  saves: {
+    userId: number
+  }[]
 }

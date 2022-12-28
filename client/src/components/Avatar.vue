@@ -19,7 +19,6 @@
     // Obteniendo a user del local storage
     const userRaw = <string>localStorage.getItem("user")
     src.value = JSON.parse(userRaw).avata
-    console.log(JSON.parse(userRaw).avata)
     alt.value = "user"
   }
 </script>
