@@ -89,6 +89,14 @@ export const getFeed: RequestHandler = async ({ query, body }, res) => {
           },
         },
       },
+      replies: {
+        take: 3,
+        include: {
+          author: { select: { username: true } },
+          favorites: { where: { userId: { equals: userId } } },
+          _count: { select: { favorites: true } },
+        },
+      },
     }
 
     // Esta parte de codigo determinara una fecha de los posts mas destacados la ultima hora

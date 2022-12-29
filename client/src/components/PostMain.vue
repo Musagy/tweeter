@@ -59,9 +59,9 @@
     /* width: 100%; */
     display: flex;
     justify-content: space-evenly;
-    margin: -10px 0;
   }
   hr {
+    margin: -4px 0;
     border: 1px solid #f2f2f2;
   }
 </style>
