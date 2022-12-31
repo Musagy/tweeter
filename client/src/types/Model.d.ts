@@ -36,4 +36,5 @@ export type Post = {
   saves: {
     userId: number
   }[]
+  retweeting: Post
 }

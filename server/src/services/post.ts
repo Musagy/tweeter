@@ -3,8 +3,58 @@ import { String } from "../interfaces/typeNullable"
 
 const prisma = new PrismaClient()
 
-export const createPost = async (post: Prisma.PostsUncheckedCreateInput) => {
-  return await prisma.posts.create({ data: { ...post } })
+export const createPost = async (
+  post: Prisma.PostsUncheckedCreateInput,
+  userId: number
+) => {
+  return await prisma.posts.create({
+    data: { ...post },
+    include: {
+      author: {
+        select: {
+          name: true,
+          username: true,
+          id: true,
+        },
+      },
+      _count: {
+        select: {
+          replies: true,
+          retweets: true,
+          saves: true,
+        },
+      },
+      favorites: {
+        where: {
+          userId: {
+            equals: userId,
+          },
+        },
+      },
+      retweets: {
+        where: {
+          authorId: {
+            equals: userId,
+          },
+        },
+      },
+      saves: {
+        where: {
+          userId: {
+            equals: userId,
+          },
+        },
+      },
+      replies: {
+        take: 3,
+        include: {
+          author: { select: { username: true } },
+          favorites: { where: { userId: { equals: userId } } },
+          _count: { select: { favorites: true } },
+        },
+      },
+    },
+  })
 }
 export const getPostsCount = async (authorId: number) => {
   const res = await prisma.posts.count({
@@ -24,33 +74,48 @@ export const getPostPage = async ({
   page = 1,
   take = 15,
   orderByExt = { favorites: { _count: "desc" } },
-  additionalIncludes,
+  searcher,
 }: {
   orderByExt?: Prisma.PostsOrderByWithRelationInput
   where?: Prisma.PostsWhereInput
   page?: number
   take?: number
-  additionalIncludes?: Prisma.PostsInclude
+  searcher?: { equals: number }
 }) => {
   const skip = (page - 1) * 15
 
   // Datos de autor para que vaya en el post
   const include: Prisma.PostsInclude = {
-    author: {
-      select: {
-        name: true,
-        username: true,
-        id: true,
+    author: { select: { name: true, username: true, id: true } },
+    _count: { select: { replies: true, retweets: true, saves: true } },
+    favorites: { where: { userId: searcher } },
+    retweets: { where: { authorId: searcher } },
+    saves: { where: { userId: searcher } },
+    replies: {
+      take: 3,
+      include: {
+        author: { select: { username: true } },
+        favorites: { where: { userId: searcher } },
+        _count: { select: { favorites: true } },
       },
     },
-    _count: {
-      select: {
-        replies: true,
-        retweets: true,
-        saves: true,
+    retweeting: {
+      include: {
+        author: { select: { name: true, username: true, id: true } },
+        _count: { select: { replies: true, retweets: true, saves: true } },
+        favorites: { where: { userId: searcher } },
+        retweets: { where: { authorId: searcher } },
+        saves: { where: { userId: searcher } },
+        replies: {
+          take: 3,
+          include: {
+            author: { select: { username: true } },
+            favorites: { where: { userId: searcher } },
+            _count: { select: { favorites: true } },
+          },
+        },
       },
     },
-    ...additionalIncludes,
   }
 
   // Settear como se ordenaran los posts

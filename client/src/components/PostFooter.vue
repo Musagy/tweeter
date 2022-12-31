@@ -7,11 +7,17 @@
         <span class="material-symbols-outlined"> image </span>
       </button>
     </div>
-    <template v-if="post.replies.length > 0 ">
+    <template v-if="post.replies.length > 0">
       <hr />
       <div class="replies__ctn">
         <Reply v-for="reply in post.replies" :post="reply" />
       </div>
+      <template v-if="post.replies.length > 3">
+        <hr />
+        <RouterLink :to="'/post/' + post.id" class="to-full-post"
+          >Ver más comentarios</RouterLink
+        >
+      </template>
     </template>
   </footer>
 </template>
@@ -20,7 +26,7 @@
   import { usePostModalStore } from "../store/usePostModalStore"
   import { Post } from "../types/Model"
   import Avatar from "./Avatar.vue"
-  import Reply from "./reply.vue"
+  import Reply from "./Reply.vue"
 
   const { post } = defineProps<{
     post: Post
@@ -28,8 +34,15 @@
 
   const modalStore = usePostModalStore()
   const { openModal } = modalStore
+
+  const unshifter = (newPost: Post) => {
+    let commentaries = post.replies
+    commentaries.unshift(newPost)
+    post.replies = commentaries
+    console.log(post.replies)
+  }
   const createReply = () => {
-    openModal(post.id, "reply")
+    openModal(post.id, "reply", unshifter)
   }
 </script>
 
@@ -60,6 +73,20 @@
     font-weight: 500;
 
     padding-left: 10px;
+  }
+  .replies__ctn {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .to-full-post {
+    color: #777;
+    font-family: Noto Sans;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    margin: 4px;
   }
   .material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 48;

@@ -7,11 +7,11 @@
     }"
   >
     <main>
-      <CreatePost />
+      <CreatePost @unshifter="unshifter" />
       <ForYouPage />
     </main>
     <aside>
-      <!-- <Trend/> -->
+      <!-- <Trends/> -->
     </aside>
   </Layout>
 </template>
@@ -20,7 +20,12 @@
   import Layout from "../components/Layout.vue"
   import CreatePost from "../components/CreatePost.vue"
   import ForYouPage from "../components/ForYouPage.vue"
-  // import Trend from '../components/Trend.vue';
+  // import Trends from '../components/Trends.vue';
+  import { useUserNewPosts } from "../store/useUserNewPosts"
+  import { Post } from "../types/Model"
+
+  const { insertNewPost } = useUserNewPosts()
+  const unshifter = (newPost: Post) => insertNewPost(newPost)
 </script>
 
 <style scoped>

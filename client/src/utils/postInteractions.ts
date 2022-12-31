@@ -1,9 +1,7 @@
 import axios from "axios"
-import { Ref } from "vue"
 import { useToast } from "vue-toastification"
 import { ToastID } from "vue-toastification/dist/types/types"
 import { usePostModalStore } from "../store/usePostModalStore"
-import { createPost } from "./postQueries"
 
 export type Interaction = {
   icon: string

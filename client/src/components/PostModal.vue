@@ -1,7 +1,7 @@
 <template>
   <section class="post-modal__Ctn" v-if="isOpen">
     <button class="post-model-bg" @click="closeModal" />
-    <CreatePost :additionalContent="options" />
+    <CreatePost :additionalContent="options" :title="title" @unshifter="unshifter" @afterAll="closeModal"/>
   </section>
 </template>
 
@@ -12,8 +12,13 @@
   import CreatePost from "./CreatePost.vue"
 
   const modalStore = usePostModalStore()
-  const { isOpen, options } = storeToRefs(modalStore)
+  const { isOpen, options, unshifter } = storeToRefs(modalStore)
   const { closeModal } = modalStore
+
+  const title = computed(()=> {
+    if(options.value.parentId) return "¿Que va a comentar?"
+    if(options.value.retweetId) return "¿Que comentaras para el retweet?"
+  })
 
   watch(
     computed(() => isOpen.value),

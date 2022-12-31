@@ -18,13 +18,16 @@ export const createPost: RequestHandler = async ({ body }, res) => {
       "public",
     ])
 
-    let post: any = await PostServices.createPost({
-      authorId,
-      content: body.content,
-      ...retweet,
-      ...reply,
-      public: Boolean(isPublic?.public),
-    })
+    let post: any = await PostServices.createPost(
+      {
+        authorId,
+        content: body.content,
+        ...retweet,
+        ...reply,
+        public: Boolean(isPublic?.public),
+      },
+      authorId
+    )
 
     // Si responde un string es porque le mando el texto de error
     if (typeof post == "string") res.status(400).send(post)
@@ -67,37 +70,7 @@ export const getFeed: RequestHandler = async ({ query, body }, res) => {
 
     // includes necesarios para la info de las interacciones que tuvo el usuario con los posts
 
-    const include: Prisma.PostsInclude = {
-      favorites: {
-        where: {
-          userId: {
-            equals: userId,
-          },
-        },
-      },
-      retweets: {
-        where: {
-          authorId: {
-            equals: userId,
-          },
-        },
-      },
-      saves: {
-        where: {
-          userId: {
-            equals: userId,
-          },
-        },
-      },
-      replies: {
-        take: 3,
-        include: {
-          author: { select: { username: true } },
-          favorites: { where: { userId: { equals: userId } } },
-          _count: { select: { favorites: true } },
-        },
-      },
-    }
+    const searcher = { equals: +userId }
 
     // Esta parte de codigo determinara una fecha de los posts mas destacados la ultima hora
     const previous = new Date()
@@ -111,7 +84,7 @@ export const getFeed: RequestHandler = async ({ query, body }, res) => {
       ...page,
       ...take,
       where: feedConfig,
-      additionalIncludes: include,
+      searcher,
     })
     res.status(200).json({ message: `Pagina ${page?.page} de feed`, posts })
   } catch (e) {

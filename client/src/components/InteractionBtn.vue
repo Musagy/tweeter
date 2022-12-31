@@ -1,5 +1,5 @@
 <template>
-  <button @click="handler" :class="{ active: isActive }">
+  <button @click="() => handler(post.id)" :class="{ active: isActive }">
     <span class="material-symbols-outlined"> {{ interaction.icon }} </span>
     {{ interaction.title }}
   </button>
@@ -26,12 +26,13 @@
       : 0
   )
 
-  const handler = async () => {
+  const handler = async (id: number) => {
+    console.log(id)
     if (interaction.postRef !== "retweets") {
-      interaction.handler(post.id)
+      interaction.handler(id)
     } else {
       const newRetweetId = await (<Promise<number>>(
-        interaction.handler(post.id, retweetId.value)
+        interaction.handler(id, retweetId.value)
       ))
       if (newRetweetId !== undefined) {
         retweetId.value = newRetweetId

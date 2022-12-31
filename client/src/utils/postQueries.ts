@@ -14,11 +14,13 @@ export const createPost = async (
     parentId?: number
     retweetId?: number
   }
-) => {
+): Promise<Post | undefined> => {
   // Comprobar si el no hay nada en el post
   const Authorization = <string>localStorage.getItem("token")
 
-  if (!content.value) return toast.warning("Post vacio")
+  if (!content.value) {
+    toast.warning("Post vacio")
+  }
 
   // Hacer petición
   try {
@@ -28,10 +30,13 @@ export const createPost = async (
       { headers: { Authorization } }
     )
     // Si sale un resultado distinto de 200
-    if (status !== 200) return toast.error(data.response.data.error)
+    if (status !== 200) {
+      toast.error(data.response.data.error)
+    }
     // si todo sale bien
     toast(data.message)
     content.value = ""
+    return data.post
   } catch (err: any) {
     toast.error(err.response.data.error)
   }
@@ -41,7 +46,7 @@ export const postsOfFYP = async (page: number = 1): Promise<Post[] | []> => {
   try {
     const Authorization = <string>localStorage.getItem("token")
     const newPost = await axios.post(
-      VITE_API + "/post/feed?page=" + page,
+      VITE_API + "/post/feed?take=10&page=" + page,
       {},
       { headers: { Authorization } }
     )

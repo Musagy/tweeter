@@ -8,13 +8,15 @@
       <p>{{ post._count.replies }} Comentarios</p>
       <p>{{ post._count.retweets }} Retweets</p>
       <p>{{ post._count.saves }} Guardados</p>
+      <p>{{ post.id }}</p>
     </div>
     <hr />
     <div class="post-interactions__ctn">
       <InteractionBtn
-        v-for="interaction in interactions"
+        v-for="(interaction, index) in interactions"
         :interaction="interaction"
         :post="post"
+        :key="index"
       />
     </div>
     <hr />

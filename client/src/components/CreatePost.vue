@@ -1,8 +1,8 @@
 <template>
   <div class="ctn">
-    <h2>Tweetea algo</h2>
+    <h2>{{ title ?? "Tweetea algo" }}</h2>
     <hr />
-    <form class="form-ctn" @submit.prevent="handlerSubmit">
+    <form class="form-ctn" @submit.prevent="handlerSubmit" ref="form">
       <Avatar userId="user" />
       <PostContentInput @setContent="setContent" />
       <div class="post-setting">
@@ -19,29 +19,50 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue"
+  import { defineComponent, ref } from "vue"
   import PrivacyBtn from "./PrivacyBtn.vue"
   import PostContentInput from "./PostContentInput.vue"
   import * as PostQueries from "../utils/postQueries"
   import Avatar from "./Avatar.vue"
+  import { Post } from "../types/Model"
 
-  const { additionalContent } = defineProps<{
+  const { additionalContent, title } = defineProps<{
     additionalContent?: {
       parentId?: number
       retweetId?: number
     }
+    title?: string
+  }>()
+
+  const emit = defineEmits<{
+    (e: "unshifter", newPost: Post): void
+    (e: "afterAll"): void
   }>()
 
   // Referencia del contenido del post
+  const instance = ref<typeof defineComponent>()
   const content = ref("")
   const isPublic = ref(true)
+  const form = ref<HTMLFormElement>()
   const addImage = () => {}
 
   const setPublic = (value: boolean) => (isPublic.value = value)
   const setContent = (value: string) => (content.value = value)
 
-  const handlerSubmit = async () =>
-    PostQueries.createPost(content, isPublic, additionalContent)
+  const handlerSubmit = async () => {
+    const newPost = await PostQueries.createPost(
+      content,
+      isPublic,
+      additionalContent
+    )
+    if (!newPost) return null
+
+    emit("unshifter", newPost)
+    
+    if (emit("afterAll") !== null) emit("afterAll")
+    
+    form.value?.reset()
+  }
 </script>
 
 <style scoped>
@@ -72,7 +93,6 @@
   img {
     width: 40px;
     height: 40px;
-    filter: invert(1);
     border-radius: 8px;
   }
   .post-setting {
@@ -108,6 +128,6 @@
   }
   .material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 48;
-    font-size: 20px;
+    font-size: 24px;
   }
 </style>
