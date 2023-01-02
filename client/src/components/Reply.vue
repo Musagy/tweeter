@@ -65,7 +65,7 @@
   }
 
   .reply__content {
-    background: #fafafa;
+    background: #f7f7f7;
     padding: 15px 12px;
     border-radius: 8px;
   }

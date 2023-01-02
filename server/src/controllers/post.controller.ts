@@ -33,8 +33,8 @@ export const createPost: RequestHandler = async ({ body }, res) => {
     if (typeof post == "string") res.status(400).send(post)
 
     // setea los tags
-    const tags = await TagServices.setPostTags(body.content, post.id)
-    if (tags !== null) post = await PostServices.getPostById(`${post.id}`)
+    await TagServices.setPostTags(body.content, post.id)
+    // if (tags !== null) post = await PostServices.getPostById(`${post.id}`)
 
     // returna las respuesta normal
     res.status(200).json({
@@ -123,7 +123,7 @@ export const getPostById: RequestHandler = async ({ params }, res) => {
   try {
     const postId = params.id
     const post = await PostServices.getPostById(postId)
-    res.status(200).json(post)
+    res.status(200).json({ message: `Post de Id ${postId} obtenido`, post })
   } catch (e) {
     handleHttp(res, "No se pudo obtener el posts", e)
   }
@@ -166,19 +166,30 @@ export const deletePostById: RequestHandler = async ({ params, body }, res) => {
 export const searchPost: RequestHandler = async ({ query, params }, res) => {
   try {
     const content = params.content
-    // const take = query.take
-    // const page = query.page
-    let [take, page]: Array<String> = [undefined, undefined]
+    
+    let [take, page]: Array<String> = [undefined, undefined, "Top"]
     if (query?.take) page = <string>query.take
     if (query?.page) page = <string>query.page
-    console.log(take, page)
+
+    let filter: "Top" | "Lastest" | "People" | "Media" =
+      <"Top" | "Lastest" | "People" | "Media">query.filter ?? "Top"
 
     if (!(content || take || page)) res.status(200).json([])
 
-    const post = await PostServices.searchPost(content, page, take)
+    const post = await PostServices.searchPost(content, page, take, filter)
 
     res.status(200).json(post)
   } catch (e) {
     handleHttp(res, "Ha ocurrido un error en el servidor al buscar esto", e)
+  }
+}
+
+export const getTrends: RequestHandler = async (_req, res) => {
+  try {
+    const trends = await PostServices.getTrends()
+
+    res.status(200).json(trends)
+  } catch (e) {
+    handleHttp(res, "Ha ocurrido un error en el servidor al buscar trends", e)
   }
 }

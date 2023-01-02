@@ -38,3 +38,10 @@ export type Post = {
   }[]
   retweeting: Post
 }
+
+export type Trends = {
+  id: string
+  _count: {
+    posts: number
+  }
+}

@@ -4,7 +4,7 @@
       <router-link
         v-if="typeof btn.handler === 'string'"
         :to="btn.handler"
-        :class="{ current: btn.handler === path }"
+        :class="{ current: validateCurrent(btn.handler)}"
       >
         {{ btn.title }}
       </router-link>
@@ -17,6 +17,8 @@
   import { useRoute } from "vue-router"
 
   const { path } = useRoute()
+
+  const validateCurrent = (handler: string) => handler !== "/" && path.startsWith(handler) || path === handler
 </script>
 
 <style scoped>

@@ -1,8 +1,9 @@
 <template>
   <section class="posts">
-    <template v-for="posts in allGroupsPost" >
+    <template v-if="allGroupsPost[1].length > 0" v-for="posts in allGroupsPost">
       <Post v-for="post in posts" :key="post.id" :post="post" />
     </template>
+    <Loading v-else />
   </section>
 </template>
 
@@ -13,6 +14,7 @@
   import * as PostQueries from "../utils/postQueries"
   import { useUserNewPosts } from "../store/useUserNewPosts"
   import { storeToRefs } from "pinia"
+  import Loading from "./Loading.vue"
 
   const allPagePost = ref<PostType[][]>([[]])
 

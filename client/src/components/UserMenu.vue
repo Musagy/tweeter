@@ -81,8 +81,8 @@
     display: flex;
     align-items: center;
 
-    width: 120px;
-    height: 26px;
+    width: 164px;
+    height: 40px;
     gap: 10px;
     padding: 4px 10px;
 

@@ -1,14 +1,13 @@
 <template>
   <main>
-    <p>
+    <p @click="clickToPost">
       {{ post.content }}
     </p>
     <img v-if="post.image" :src="post.image" :alt="'image-post-' + post.id" />
-    <div class="counters">
+    <div class="counters"  @click="clickToPost">
       <p>{{ post._count.replies }} Comentarios</p>
       <p>{{ post._count.retweets }} Retweets</p>
       <p>{{ post._count.saves }} Guardados</p>
-      <p>{{ post.id }}</p>
     </div>
     <hr />
     <div class="post-interactions__ctn">
@@ -27,10 +26,19 @@
   import { Post } from "../types/Model"
   import { interactions } from "../utils/postInteractions"
   import InteractionBtn from "./InteractionBtn.vue"
+  import { useRoute, useRouter } from "vue-router"
 
   const { post } = defineProps<{
     post: Post
   }>()
+
+  
+  const { push } = useRouter()
+  const { path } = useRoute()
+  const clickToPost = () => {
+    if (!path.startsWith("/post/"))
+      push(`/post/${post.retweetId === null ? post.id : post.retweeting.id}`)
+  }
 </script>
 
 <style scoped>

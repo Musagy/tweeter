@@ -57,3 +57,38 @@ export const postsOfFYP = async (page: number = 1): Promise<Post[] | []> => {
     return []
   }
 }
+export const getTrends = async () => {
+  try {
+    const { data } = await axios.get(VITE_API + "/post/trends")
+
+    return data.trends
+  } catch (err: any) {
+    toast.error(err.response.data.error)
+    return []
+  }
+}
+
+export const getPostById = async (postId: number) => {
+  try {
+    const { data } = await axios.get(VITE_API + "/post/" + postId)
+
+    return data.post
+  } catch (err: any) {
+    toast.error(err.response.data.error)
+    return []
+  }
+}
+
+export const searchPost = async (content: string, filter: string) => {
+  try {
+    const { data } = await axios.get(
+      VITE_API + "/post/search/" + content + "?filter=" + filter
+    )
+    console.log(data)
+    return data
+  } catch (err: any) {
+    console.log(err)
+    toast.error(err.response.data.error)
+    return null
+  }
+}

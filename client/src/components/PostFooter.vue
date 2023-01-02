@@ -12,7 +12,7 @@
       <div class="replies__ctn">
         <Reply v-for="reply in post.replies" :post="reply" />
       </div>
-      <template v-if="post.replies.length > 3">
+      <template v-if="post._count.replies > (isIndividualPost ? 10 : 3)">
         <hr />
         <RouterLink :to="'/post/' + post.id" class="to-full-post"
           >Ver más comentarios</RouterLink
@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+  import { useRoute } from "vue-router"
   import { usePostModalStore } from "../store/usePostModalStore"
   import { Post } from "../types/Model"
   import Avatar from "./Avatar.vue"
@@ -31,6 +32,7 @@
   const { post } = defineProps<{
     post: Post
   }>()
+  const isIndividualPost = useRoute().path.startsWith("/post/")
 
   const modalStore = usePostModalStore()
   const { openModal } = modalStore
@@ -86,7 +88,7 @@
     font-weight: 500;
     text-align: center;
     text-decoration: none;
-    margin: 4px;
+    padding: 4px 0;
   }
   .material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 48;

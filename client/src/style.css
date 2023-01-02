@@ -1,6 +1,7 @@
 * {
   margin: 0;
   font-family: Noto Sans;
+  box-sizing: border-box ;
 }
 
 .material-symbols-outlined {
