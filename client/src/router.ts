@@ -8,7 +8,7 @@ import User from "./pages/user/[id].vue"
 import PostById from "./pages/post/[id].vue"
 import Settings from "./pages/Settings.vue"
 import Search from "./pages/Search.vue"
-import Save from "./pages/Save.vue"
+import Bookmarks from "./pages/Bookmarks.vue"
 
 const routes: Readonly<RouteRecordRaw[]> = [
   { path: "/", component: Home, name: "Home", meta: { reqAuth: true } },
@@ -33,9 +33,9 @@ const routes: Readonly<RouteRecordRaw[]> = [
     name: "Search",
   },
   {
-    path: "/save",
-    component: Save,
-    name: "Save",
+    path: "/bookmarks",
+    component: Bookmarks,
+    name: "Bookmarks",
     meta: { reqAuth: true },
   },
 ]

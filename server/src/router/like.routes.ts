@@ -5,6 +5,7 @@ import { checkJwt } from "../middleware/session";
 
 const router = Router();
 
-router.get("/:post", checkJwt, likeCtrl.toggleLike)
+router.get("/get-liked", checkJwt, likeCtrl.getLiked)
+router.get("/create/:post", checkJwt, likeCtrl.toggleLike)
 
 export {router};

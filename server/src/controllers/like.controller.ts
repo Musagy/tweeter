@@ -17,3 +17,18 @@ export const toggleLike: RequestHandler = async ({ body, params }, res) => {
     handleHttp(res, "No se pudo cambiar el estado de like", e)
   }
 }
+
+export const getLiked: RequestHandler = async ({ body, query }, res) => {
+  try {
+    const userId = <String>body["user"] ?? ""
+    const page = <String>query["page"] ?? 1
+    
+    console.log(userId, userId)
+    
+    const postPage = await LikeServices.getLiked(+userId, +page)
+    if (typeof postPage === "string") res.status(400).send(postPage)
+    res.status(200).json(postPage)
+  } catch (e) {
+    handleHttp(res, "No se la lista de posts likeados", e)
+  }
+}

@@ -17,3 +17,20 @@ export const toggleSave: RequestHandler = async ({ body, params }, res) => {
     handleHttp(res, "No se pudo cambiar el estado de guardado de posts", e)
   }
 }
+type Filters = "tweets" | "tweets-and-replies" | "media"
+
+export const getSaved: RequestHandler = async ({ body, query }, res) => {
+  try {
+    const userId = <String>body["user"] ?? ""
+    const filter = <Filters>query["filter"]
+    const page = <String>query["page"] ?? 1
+
+    console.log(userId, filter, userId)
+
+    const postPage = await SaveServices.getSaved(+userId, filter, +page)
+    if (typeof postPage === "string") res.status(400).send(postPage)
+    res.status(200).json(postPage)
+  } catch (e) {
+    handleHttp(res, "No se la lista de posts salvados", e)
+  }
+}

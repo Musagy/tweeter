@@ -61,7 +61,7 @@ const toggle = async (refPostId: number, type: "like" | "save") => {
   try {
     const Authorization = <string>localStorage.getItem("token")
     const { data, status } = await axios.get(
-      `${VITE_API}/${type}/${refPostId}`,
+      `${VITE_API}/${type}/create/${refPostId}`,
       { headers: { Authorization } }
     )
     // Si sale un resultado distinto de 200

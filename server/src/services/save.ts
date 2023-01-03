@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { String } from "../interfaces/typeNullable"
 
 
@@ -57,4 +58,61 @@ export const toggleSave = async (UserId: String, PostId: String) => {
       await unsaveAPost(userId, postId)
       return `Has quitado el post de Id ${postId} de tus guardados`
   }
+}
+
+type Filters = "tweets" | "tweets-and-replies" | "media"
+
+export const getSaved = async (
+  userId: number,
+  filter: Filters,
+  page: number = 1
+) => {
+  if (!userId || !filter) return "No se pudo hacer la acción por falta de datos"
+
+  const filterWhere: { [e in Filters]: Prisma.SavesFindManyArgs } = {
+    tweets: {
+      where: {
+        post: { parentId: { equals: null } },
+      },
+    },
+    ["tweets-and-replies"]: {
+      where: {},
+    },
+    media: {
+      where: {
+        // post: { photo: { not: { equals: null } } },
+      },
+    },
+  }
+  const searcher = { equals: userId }
+  const postPage = await prisma.saves.findMany({
+    where: {
+      userId: { equals: userId },
+      ...filterWhere[filter].where,
+    },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    skip: 10 * (page - 1),
+    include: {
+      post: {
+        include: {
+          author: { select: { name: true, username: true, id: true } },
+          _count: { select: { replies: true, retweets: true, saves: true } },
+          favorites: { where: { userId: searcher } },
+          retweets: { where: { authorId: searcher } },
+          saves: { where: { userId: searcher } },
+          replies: {
+            take: 10,
+            include: {
+              author: { select: { username: true } },
+              favorites: { where: { userId: searcher } },
+              _count: { select: { favorites: true } },
+            },
+          },
+        },
+      },
+    },
+  })
+
+  return postPage
 }

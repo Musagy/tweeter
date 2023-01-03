@@ -23,7 +23,7 @@
   .ctn {
     background: #f2f2f2;
     width: 100%;
-    min-height: calc(100vh - v-bind("padding"));
+    min-height: 100vh;
     padding-top: v-bind("padding");
     display: flex;
     padding-bottom: 40px;

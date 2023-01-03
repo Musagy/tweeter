@@ -19,7 +19,7 @@ export const mainMenu: btn[] = [
   },
   {
     title: "Marcadores",
-    handler: "/save",
+    handler: "/bookmarks",
   },
 ]
 

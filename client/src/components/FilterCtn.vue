@@ -14,30 +14,18 @@
 <script setup lang="ts">
   import { ref } from "vue"
 
-  const emit = defineEmits<{
-    (e: "setFilter", filter: string): void
+  const {filters} = defineProps<{
+    filters:{
+      type: string,
+      query: string,
+    } []
   }>()
 
-  const filters = [
-    {
-      type: "Popular",
-      query: "Top",
-    },
-    {
-      type: "Recientes",
-      query: "Lastest",
-    },
-    {
-      type: "Personas",
-      query: "People",
-    },
-    {
-      type: "Con multimedia",
-      query: "Media",
-    },
-  ]
+  const emit = defineEmits<{
+    (e: "setFilter", filter: any): void
+  }>()
 
-  const filterActive = ref("Top")
+  const filterActive = ref(filters[0].query)
 
   const handler = (filter: string) => {
     emit("setFilter", filter)

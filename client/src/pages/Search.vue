@@ -6,7 +6,7 @@
       gap: '25px',
     }"
   >
-    <SearchFilter @setFilter="setFilter" />
+    <FiltersCtn @setFilter="setFilter" :filters="filters" />
     <main>
       <form id="search" @submit.prevent="handler">
         <span class="material-symbols-outlined"> search </span>
@@ -35,10 +35,29 @@
   import { onMounted, ref } from "vue"
   import Layout from "../components/Layout.vue"
   import Post from "../components/Post.vue"
-  import SearchFilter from "../components/SearchFilter.vue"
+  import FiltersCtn from "../components/FilterCtn.vue"
   import { useRoute, useRouter } from "vue-router"
   import { Post as PostType } from "../types/Model"
   import { searchPost } from "../utils/postQueries"
+
+  const filters = [
+    {
+      type: "Popular",
+      query: "Top",
+    },
+    {
+      type: "Recientes",
+      query: "Lastest",
+    },
+    {
+      type: "Personas",
+      query: "People",
+    },
+    {
+      type: "Con multimedia",
+      query: "Media",
+    },
+  ]
 
   const filterType = ref("Top")
   const setFilter = (filter: string) => (filterType.value = filter)
@@ -55,8 +74,8 @@
     fetchPost()
   }
   const fetchPost = async () => {
-    const res = await searchPost(whatSearch.value, filterType.value)
     postsFound.value = []
+    const res = await searchPost(whatSearch.value, filterType.value)
     postsFound.value.push(res)
   }
 
@@ -74,11 +93,10 @@
     width: 100%;
   }
   #search {
-    width: 100%;
     max-width: 745px;
 
     display: flex;
-    gap: 12px;
+    gap:32px;
     width: 100%;
 
     background: #ffffff;
@@ -118,7 +136,7 @@
     padding: 8px 24px;
   }
 
-  .results{
+  .results {
     display: flex;
     flex-direction: column;
     gap: 24px;

@@ -92,3 +92,30 @@ export const searchPost = async (content: string, filter: string) => {
     return null
   }
 }
+export const bookmarksPost = async (
+  filter: "Tweets" | "TweetsNReplies" | "Media" | "Likes",
+  page: number = 1
+) => {
+  const path = {
+    Tweets: "/save/get-saved?filter=tweets&",
+    TweetsNReplies: "/save/get-saved?filter=tweets-and-replies&",
+    Media: "/save/get-saved?filter=media&",
+    Likes: "/like/get-liked?",
+  }
+  const Authorization = <string>localStorage.getItem("token")
+  console.log(VITE_API + path[filter] + "page=" + page)
+  try {
+    const { data } = await axios.get(
+      VITE_API + path[filter] + "&page=" + page,
+      { headers: { Authorization } }
+    )
+    console.log(data)
+    const postPage = <Post[]>data.map(({ post }: { post: Post }) => post)
+    return postPage
+  } catch (err: any) {
+    console.log(err)
+    console.log(err)
+    toast.error(err.response.data.error)
+    return null
+  }
+}

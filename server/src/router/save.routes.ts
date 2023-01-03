@@ -5,6 +5,7 @@ import { checkJwt } from "../middleware/session";
 
 const router = Router();
 
-router.get("/:post", checkJwt, saveCtrl.toggleSave)
+router.get("/get-saved", checkJwt, saveCtrl.getSaved)
+router.get("/create/:post", checkJwt, saveCtrl.toggleSave)
 
 export {router};
