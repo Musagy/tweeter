@@ -10,11 +10,15 @@ export const toggleSave: RequestHandler = async ({ body, params }, res) => {
 
     const message = await SaveServices.toggleSave(userId, postId)
     if (message == "No se pudo hacer la accion por falta de datos")
-      res.status(400).send(message)
+      return res.status(400).send(message)
 
-    res.status(200).json({ message })
+    return res.status(200).json({ message })
   } catch (e) {
-    handleHttp(res, "No se pudo cambiar el estado de guardado de posts", e)
+    return handleHttp(
+      res,
+      "No se pudo cambiar el estado de guardado de posts",
+      e
+    )
   }
 }
 type Filters = "tweets" | "tweets-and-replies" | "media"
@@ -28,9 +32,9 @@ export const getSaved: RequestHandler = async ({ body, query }, res) => {
     console.log(userId, filter, userId)
 
     const postPage = await SaveServices.getSaved(+userId, filter, +page)
-    if (typeof postPage === "string") res.status(400).send(postPage)
-    res.status(200).json(postPage)
+    if (typeof postPage === "string") return res.status(400).send(postPage)
+    return res.status(200).json(postPage)
   } catch (e) {
-    handleHttp(res, "No se la lista de posts salvados", e)
+    return handleHttp(res, "No se la lista de posts salvados", e)
   }
 }

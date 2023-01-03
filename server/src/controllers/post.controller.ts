@@ -30,19 +30,19 @@ export const createPost: RequestHandler = async ({ body }, res) => {
     )
 
     // Si responde un string es porque le mando el texto de error
-    if (typeof post == "string") res.status(400).send(post)
+    if (typeof post == "string") return res.status(400).send(post)
 
     // setea los tags
     await TagServices.setPostTags(body.content, post.id)
     // if (tags !== null) post = await PostServices.getPostById(`${post.id}`)
 
     // returna las respuesta normal
-    res.status(200).json({
+    return res.status(200).json({
       message: "Post creado",
       post: { ...post },
     })
   } catch (e) {
-    handleHttp(res, "No se pudo crear el post", e)
+    return handleHttp(res, "No se pudo crear el post", e)
   }
 }
 
@@ -53,9 +53,9 @@ export const countMyPosts: RequestHandler = async ({ body }, res) => {
   try {
     const authorId = +body.user
     const resCount = await PostServices.getPostsCount(authorId)
-    res.status(200).json({ count: resCount })
+    return res.status(200).json({ count: resCount })
   } catch (e) {
-    handleHttp(res, "No se pudo obtener tu numero de post", e)
+    return handleHttp(res, "No se pudo obtener tu numero de post", e)
   }
 }
 
@@ -86,9 +86,11 @@ export const getFeed: RequestHandler = async ({ query, body }, res) => {
       where: feedConfig,
       searcher,
     })
-    res.status(200).json({ message: `Pagina ${page?.page} de feed`, posts })
+    return res
+      .status(200)
+      .json({ message: `Pagina ${page?.page} de feed`, posts })
   } catch (e) {
-    handleHttp(res, "No se pudo obtener los posts", e)
+    return handleHttp(res, "No se pudo obtener los posts", e)
   }
 }
 
@@ -110,9 +112,9 @@ export const getPostsByUserId: RequestHandler = async (
         authorId: +userId,
       },
     })
-    res.status(200).json(posts)
+    return res.status(200).json(posts)
   } catch (e) {
-    handleHttp(res, "No se pudo editar el posts", e)
+    return handleHttp(res, "No se pudo editar el posts", e)
   }
 }
 
@@ -123,9 +125,11 @@ export const getPostById: RequestHandler = async ({ params }, res) => {
   try {
     const postId = params.id
     const post = await PostServices.getPostById(postId)
-    res.status(200).json({ message: `Post de Id ${postId} obtenido`, post })
+    return res
+      .status(200)
+      .json({ message: `Post de Id ${postId} obtenido`, post })
   } catch (e) {
-    handleHttp(res, "No se pudo obtener el posts", e)
+    return handleHttp(res, "No se pudo obtener el posts", e)
   }
 }
 
@@ -140,11 +144,11 @@ export const editPostById: RequestHandler = async ({ params, body }, res) => {
       },
       userId: `${user?.user}`,
     })
-    post === "No eres el dueño del post"
+    return post === "No eres el dueño del post"
       ? res.status(400).send(post)
       : res.status(200).json(post)
   } catch (e) {
-    handleHttp(res, "No se pudo editar el posts", e)
+    return handleHttp(res, "No se pudo editar el posts", e)
   }
 }
 export const deletePostById: RequestHandler = async ({ params, body }, res) => {
@@ -155,18 +159,18 @@ export const deletePostById: RequestHandler = async ({ params, body }, res) => {
       postId,
       userId: `${user?.user}`,
     })
-    message === "No eres el dueño del post"
+    return message === "No eres el dueño del post"
       ? res.status(400).send(message)
       : res.status(200).json({ message })
   } catch (e) {
-    handleHttp(res, "No se pudo editar el posts", e)
+    return handleHttp(res, "No se pudo editar el posts", e)
   }
 }
 
 export const searchPost: RequestHandler = async ({ query, params }, res) => {
   try {
     const content = params.content
-    
+
     let [take, page]: Array<String> = [undefined, undefined, "Top"]
     if (query?.take) page = <string>query.take
     if (query?.page) page = <string>query.page
@@ -174,13 +178,17 @@ export const searchPost: RequestHandler = async ({ query, params }, res) => {
     let filter: "Top" | "Lastest" | "People" | "Media" =
       <"Top" | "Lastest" | "People" | "Media">query.filter ?? "Top"
 
-    if (!(content || take || page)) res.status(200).json([])
+    if (!(content || take || page)) return res.status(200).json([])
 
     const post = await PostServices.searchPost(content, page, take, filter)
 
-    res.status(200).json(post)
+    return res.status(200).json(post)
   } catch (e) {
-    handleHttp(res, "Ha ocurrido un error en el servidor al buscar esto", e)
+    return handleHttp(
+      res,
+      "Ha ocurrido un error en el servidor al buscar esto",
+      e
+    )
   }
 }
 
@@ -188,8 +196,12 @@ export const getTrends: RequestHandler = async (_req, res) => {
   try {
     const trends = await PostServices.getTrends()
 
-    res.status(200).json(trends)
+    return res.status(200).json(trends)
   } catch (e) {
-    handleHttp(res, "Ha ocurrido un error en el servidor al buscar trends", e)
+    return handleHttp(
+      res,
+      "Ha ocurrido un error en el servidor al buscar trends",
+      e
+    )
   }
 }
