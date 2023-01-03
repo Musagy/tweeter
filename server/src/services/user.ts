@@ -59,3 +59,14 @@ export const toggleFollow = async (FollowerId: String, FollowingId: String) => {
       return `Ahora ya no sigues al usuario ${followingId}`
   }
 }
+
+export const getUserById = async (UserId: String) => {
+  if (!UserId) return "No se pudo hacer la accion por falta de datos"
+  const userId = +UserId
+
+  return await prisma.users.findUnique({
+    where: {
+      id: userId,
+    },
+  })
+}
