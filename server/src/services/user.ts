@@ -68,5 +68,13 @@ export const getUserById = async (UserId: String) => {
     where: {
       id: userId,
     },
+    include:{
+      _count: {
+        select:{
+          following: true,
+          followers: true,
+        }
+      }
+    }
   })
 }

@@ -27,5 +27,6 @@
     padding-top: v-bind("padding");
     display: flex;
     padding-bottom: 40px;
+    overflow-y: hidden;
   }
 </style>

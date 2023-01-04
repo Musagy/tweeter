@@ -38,7 +38,7 @@
     display: flex;
     flex-direction: column;
 
-    width: 262px;
+    width: 304px;
     height: min-content;
 
     padding: 6px 0;

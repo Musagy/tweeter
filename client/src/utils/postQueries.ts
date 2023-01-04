@@ -84,10 +84,8 @@ export const searchPost = async (content: string, filter: string) => {
     const { data } = await axios.get(
       VITE_API + "/post/search/" + content + "?filter=" + filter
     )
-    console.log(data)
     return data
   } catch (err: any) {
-    console.log(err)
     toast.error(err.response.data.error)
     return null
   }
@@ -103,18 +101,40 @@ export const bookmarksPost = async (
     Likes: "/like/get-liked?",
   }
   const Authorization = <string>localStorage.getItem("token")
-  console.log(VITE_API + path[filter] + "page=" + page)
   try {
     const { data } = await axios.get(
       VITE_API + path[filter] + "&page=" + page,
       { headers: { Authorization } }
     )
-    console.log(data)
     const postPage = <Post[]>data.map(({ post }: { post: Post }) => post)
     return postPage
   } catch (err: any) {
-    console.log(err)
-    console.log(err)
+    toast.error(err.response.data.error)
+    return null
+  }
+}
+
+export const getPostbyUserId = async (
+  filter: "Tweets" | "TweetsNReplies" | "Media" | "Likes",
+  userId: number,
+  page: number
+) => {
+  const path = {
+    Tweets: "filter=tweets",
+    TweetsNReplies: "filter=tweets-and-replies",
+    Media: "filter=media",
+    Likes: "filter=likes",
+  }
+
+  const Authorization = <string>localStorage.getItem("token") ?? {}
+
+  try {
+    const { data } = await axios.get(
+      `${VITE_API}/post/userId/${userId}?${path[filter]}&page=${page}`,
+      { headers: { Authorization } }
+    )
+    return data
+  } catch (err: any) {
     toast.error(err.response.data.error)
     return null
   }

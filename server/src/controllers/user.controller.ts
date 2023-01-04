@@ -26,12 +26,29 @@ export const getUserById: RequestHandler = async ({ params }, res) => {
   try {
     const userId = <String>params["id"]
     const userData = await UserServices.getUserById(userId)
-    console.log(userData)
 
     if (userData === null) return res.status(400).send("El usuario no existe")
 
     return res.status(200).json(userData)
   } catch (e) {
     return handleHttp(res, "No se pudo cambiar el estado de seguimiento", e)
+  }
+}
+
+export const isFollower: RequestHandler = async ({ params, body }, res) => {
+  try {
+    const followerId = <String>body["user"] ?? 0
+    const followingId = <String>params["user"] ?? 0
+
+    if (!followerId || !followingId)
+      return res.status(400).send("No se pudo comprobar por falta de datos")
+    const isFollowingHim = await UserServices.isFollower(
+      +followerId,
+      +followingId
+    )
+
+    return res.status(200).json({ isFollower: isFollowingHim })
+  } catch (e) {
+    return handleHttp(res, "No se pudo comprobar su estado del usuario", e)
   }
 }

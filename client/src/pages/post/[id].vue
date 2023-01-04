@@ -28,7 +28,6 @@
   import Loading from "../../components/Loading.vue"
 
   const { params } = useRoute()
-  console.log(params.id)
 
   const post = ref<PostType | null>(null)
   const exists = ref<boolean>(true)

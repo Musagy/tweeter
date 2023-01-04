@@ -23,8 +23,6 @@ export const getLiked: RequestHandler = async ({ body, query }, res) => {
     const userId = <String>body["user"] ?? ""
     const page = <String>query["page"] ?? 1
 
-    console.log(userId, userId)
-
     const postPage = await LikeServices.getLiked(+userId, +page)
     if (typeof postPage === "string") return res.status(400).send(postPage)
     return res.status(200).json(postPage)

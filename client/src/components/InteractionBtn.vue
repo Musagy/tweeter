@@ -27,7 +27,6 @@
   )
 
   const handler = async (id: number) => {
-    console.log(id)
     if (interaction.postRef !== "retweets") {
       interaction.handler(id)
     } else {

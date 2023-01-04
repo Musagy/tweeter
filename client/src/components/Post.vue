@@ -39,6 +39,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   }
   a {
     color: #828282;

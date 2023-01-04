@@ -58,14 +58,11 @@ export const toggleLike = async (UserId: String, PostId: String) => {
   }
 }
 
-export const getLiked = async (
-  userId: number,
-  page: number = 1
-) => {
+export const getLiked = async (userId: number, page: number = 1) => {
   if (!userId) return "No se pudo hacer la acción por falta de datos"
 
   const searcher = { equals: userId }
-  const postPage = await prisma.saves.findMany({
+  const postPage = await prisma.likes.findMany({
     where: {
       userId: { equals: userId },
     },

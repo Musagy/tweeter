@@ -30,9 +30,7 @@
 
   onMounted(async () => {
     const initialPosts = await PostQueries.postsOfFYP()
-    console.log(initialPosts)
     allPagePost.value = [initialPosts]
-    console.log(allGroupsPost.value)
   })
 </script>
 

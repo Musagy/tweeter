@@ -232,7 +232,7 @@ export const searchPost = async (
     Media: {},
   }
   const filterOption = filters[filter]
-  console.log(filterOption, filter)
+  
   const post = await getPostPage({
     page: Number.parseInt(page),
     take: Number.parseInt(take),

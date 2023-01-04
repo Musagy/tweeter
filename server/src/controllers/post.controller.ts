@@ -4,6 +4,7 @@ import { String } from "../interfaces/typeNullable"
 import * as PostServices from "../services/post"
 import { handleHttp } from "../utils/errorHandle"
 import { propsToObjs } from "../utils/propsToObjs"
+import * as LikeServices from "../services/like"
 import * as TagServices from "../services/tag"
 
 /**
@@ -64,7 +65,6 @@ export const countMyPosts: RequestHandler = async ({ body }, res) => {
  */
 export const getFeed: RequestHandler = async ({ query, body }, res) => {
   try {
-    console.log("hola chupapis")
     const [page, take] = propsToObjs(query, ["page", "take"])
     const userId = +body.user
 
@@ -94,6 +94,7 @@ export const getFeed: RequestHandler = async ({ query, body }, res) => {
   }
 }
 
+type Filters = "tweets" | "tweets-and-replies" | "media"
 /**
  * Controlador que retornara la lista de todos los posts de un usuario
  */
@@ -103,16 +104,35 @@ export const getPostsByUserId: RequestHandler = async (
 ) => {
   try {
     const userId = params.id
-    const [page, take] = propsToObjs(query, ["page", "take"])
+    const [page, take] = propsToObjs<number>(query, ["page", "take"])
+    const filter = <Filters | "likes">query["filter"]
 
-    const posts = await PostServices.getPostPage({
-      ...page,
-      ...take,
-      where: {
+    const filters: { [e in Filters]: Prisma.PostsWhereInput } = {
+      tweets: {
         authorId: +userId,
+        parentId: { equals: null },
       },
-    })
-    return res.status(200).json(posts)
+      "tweets-and-replies": { authorId: +userId },
+      media: {
+        authorId: +userId,
+        image: { not: { equals: null } },
+      },
+    }
+    if (filter !== "likes") {
+      const posts = await PostServices.getPostPage({
+        ...page,
+        ...take,
+        where: {
+          ...filters[filter]
+        },
+      })
+      return res.status(200).json(posts)
+    } else {
+      const saved = await LikeServices.getLiked(+userId, page?.page ?? 1)
+      if (typeof saved === "string") return res.status(400).send(saved)
+      const posts = saved.map(({ post }) => post)
+      return res.status(200).json(posts)
+    }
   } catch (e) {
     return handleHttp(res, "No se pudo editar el posts", e)
   }

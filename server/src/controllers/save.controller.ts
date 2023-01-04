@@ -29,7 +29,6 @@ export const getSaved: RequestHandler = async ({ body, query }, res) => {
     const filter = <Filters>query["filter"]
     const page = <String>query["page"] ?? 1
 
-    console.log(userId, filter, userId)
 
     const postPage = await SaveServices.getSaved(+userId, filter, +page)
     if (typeof postPage === "string") return res.status(400).send(postPage)

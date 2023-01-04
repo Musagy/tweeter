@@ -12,7 +12,6 @@ export async function userTestWithPostCount() {
   let { _body: userRes }: any = await API.post("/auth/signin").send(user)
   const userId = await userRes.user.id
   const userToken = await userRes.token
-  // console.log(userRes, userToken, userId)
 
   const { _body: countRes }: any = await API.post("/post/count/me").set(
     "Authorization",

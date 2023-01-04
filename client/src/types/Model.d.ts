@@ -6,6 +6,15 @@ export type User = {
   name: string
   createdAt: Date
   role: Role
+
+  avatar: string | null
+  banner: string | null
+  desc: string | null
+
+  _count: {
+    followers: number
+    following: number
+  }
 }
 export type Post = {
   id: number

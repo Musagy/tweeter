@@ -17,6 +17,10 @@ model Users {
   password   String 
 
   name       String?
+  avatar     String?
+  banner     String?
+  desc       String?
+
   createdAt  DateTime   @default(now())
   role       Role       @default(USER)
   posts      Posts[]
@@ -43,6 +47,7 @@ model Posts {
   id           Int         @default(autoincrement()) @id
   createdAt    DateTime    @default(now())
   content      String?
+  image        String?
   public       Boolean     @default(true)
 
   author       Users       @relation(fields: [authorId], references: [id])

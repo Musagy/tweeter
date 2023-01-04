@@ -9,8 +9,9 @@
   import { ref } from "vue"
 
   const { photo, userId } = defineProps<{
-    photo?: string
+    photo?: string | null
     userId: number | "user"
+    size?: string
   }>()
   const alt = ref("userId" + userId)
   const src = ref(photo)
@@ -25,8 +26,8 @@
 
 <style scoped>
   img {
-    width: 40px;
-    height: 40px;
+    width: v-bind("size ?? '40px'");
+    height: v-bind("size ?? '40px'");
     border-radius: 8px;
   }
 </style>

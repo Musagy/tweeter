@@ -1,10 +1,13 @@
 import { Router } from "express";
-import * as followCtrl from "../controllers/user.controller";
+import * as userCtrl from "../controllers/user.controller";
 import { checkJwt } from "../middleware/session";
 // import * as authCtrl from "../controllers/auth.controller";
 
 const router = Router();
 
-router.post("/follow/:user", checkJwt, followCtrl.toggleFollow)
+router.get("/follow/:user", checkJwt, userCtrl.toggleFollow)
+router.get("/is-follower/:userId", checkJwt, userCtrl.isFollower)
+
+router.get("/:id", userCtrl.getUserById)
 
 export {router};

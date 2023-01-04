@@ -28,7 +28,6 @@ export const usePostModalStore = defineStore("post modal", () => {
     isOpen.value = true
   }
   function closeModal() {
-    console.log("cerrando")
     unshifter.value = (_newPost: Post) => {}
     isOpen.value = false
     options.value = {}

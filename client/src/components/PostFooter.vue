@@ -41,7 +41,6 @@
     let commentaries = post.replies
     commentaries.unshift(newPost)
     post.replies = commentaries
-    console.log(post.replies)
   }
   const createReply = () => {
     openModal(post.id, "reply", unshifter)
