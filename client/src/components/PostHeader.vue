@@ -1,6 +1,6 @@
 <template>
   <header>
-    <Avatar :photo="post.image" :user-id="post.authorId" />
+    <Avatar :photo="post.author.avatar" :user-id="post.authorId" />
     <span>{{ post.author.username }}</span>
     <p>{{ date }}</p>
   </header>

@@ -1,6 +1,6 @@
 <template>
   <article>
-    <Avatar :photo="post.image" :user-id="post.authorId" />
+    <Avatar :photo="post.author.avatar" :user-id="post.authorId" />
     <div class="reply">
       <div class="reply__content">
         <div class="reply-info">

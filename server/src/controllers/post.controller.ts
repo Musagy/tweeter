@@ -25,6 +25,7 @@ export const createPost: RequestHandler = async ({ body }, res) => {
         content: body.content,
         ...retweet,
         ...reply,
+        image: body?.image,
         public: Boolean(isPublic?.public),
       },
       authorId
@@ -35,7 +36,6 @@ export const createPost: RequestHandler = async ({ body }, res) => {
 
     // setea los tags
     await TagServices.setPostTags(body.content, post.id)
-    // if (tags !== null) post = await PostServices.getPostById(`${post.id}`)
 
     // returna las respuesta normal
     return res.status(200).json({
@@ -123,7 +123,7 @@ export const getPostsByUserId: RequestHandler = async (
         ...page,
         ...take,
         where: {
-          ...filters[filter]
+          ...filters[filter],
         },
       })
       return res.status(200).json(posts)

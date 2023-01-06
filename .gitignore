@@ -1,7 +1,7 @@
 */node_modules
-# */*.env
+*/.env*
 
-## client
+# ## client
 
 # Logs
 client/logs
@@ -14,7 +14,6 @@ client/lerna-debug.log*
 
 client/dist
 client/dist-ssr
-client/*.local
 
 client/# Editor directories and files
 client/.vscode/*

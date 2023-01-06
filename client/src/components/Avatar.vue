@@ -1,12 +1,13 @@
 <template>
   <img
-    :src="photo || 'https://osu.ppy.sh/images/layout/avatar-guest@2x.png'"
+    :src="src || 'https://osu.ppy.sh/images/layout/avatar-guest@2x.png'"
     :alt="alt"
   />
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue"
+  import { onMounted, ref } from "vue"
+import { User } from "../types/Model";
 
   const { photo, userId } = defineProps<{
     photo?: string | null
@@ -16,12 +17,16 @@
   const alt = ref("userId" + userId)
   const src = ref(photo)
 
-  if (userId === "user") {
-    // Obteniendo a user del local storage
-    const userRaw = <string>localStorage.getItem("user")
-    src.value = JSON.parse(userRaw).avata
-    alt.value = "user"
-  }
+  onMounted(() => {
+    if (userId === "user") {
+      // Obteniendo a user del local storage
+      const userRaw = <string>localStorage.getItem("user")
+      const user = <User>JSON.parse(userRaw)
+      console.log(user)
+      src.value = user.avatar
+      alt.value = "user"
+    }
+  })
 </script>
 
 <style scoped>

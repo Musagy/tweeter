@@ -23,6 +23,6 @@ export const signIn: RequestHandler = async ({ body }, res) => {
 
     return res.send(responseUser)
   } catch (e) {
-    return handleHttp(res, "No se pudo crear la cuenta", e)
+    return handleHttp(res, "No se pudo logear correctamente", e)
   }
 }

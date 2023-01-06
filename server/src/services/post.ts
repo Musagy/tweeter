@@ -87,7 +87,7 @@ export const getPostPage = async ({
 
   // Datos de autor para que vaya en el post
   const include: Prisma.PostsInclude = {
-    author: { select: { name: true, username: true, id: true } },
+    author: { select: { name: true, username: true, id: true, avatar: true } },
     _count: { select: { replies: true, retweets: true, saves: true } },
     favorites: { where: { userId: searcher } },
     retweets: { where: { authorId: searcher } },
@@ -95,7 +95,7 @@ export const getPostPage = async ({
     replies: {
       take: 3,
       include: {
-        author: { select: { username: true } },
+        author: { select: { username: true, avatar: true } },
         favorites: { where: { userId: searcher } },
         _count: { select: { favorites: true } },
       },
@@ -232,7 +232,7 @@ export const searchPost = async (
     Media: {},
   }
   const filterOption = filters[filter]
-  
+
   const post = await getPostPage({
     page: Number.parseInt(page),
     take: Number.parseInt(take),

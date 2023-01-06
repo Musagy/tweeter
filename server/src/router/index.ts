@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { readdirSync } from "fs"
-import { colorizeText, colorFont } from "../utils/colorizeText"
+import { colorizeText } from "../utils/colorizeText"
 
 const PATH_ROUTER = `${__dirname}`
 const router = Router()
@@ -19,7 +19,7 @@ routes.forEach(fileName => {
         console.log(
           `se esta cargando la ruta... /${colorizeText(
             cleanName,
-            colorFont(`${cleanName}`)
+            Math.ceil(Math.random() * 6)
           )}`
         )
 

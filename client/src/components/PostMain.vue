@@ -3,8 +3,8 @@
     <p @click="clickToPost">
       {{ post.content }}
     </p>
-    <img v-if="post.image" :src="post.image" :alt="'image-post-' + post.id" />
-    <div class="counters"  @click="clickToPost">
+    <img v-if="post.image" :src="post.image" :alt="'image-post-' + post.id" class="post-image" />
+    <div class="counters" @click="clickToPost">
       <p>{{ post._count.replies }} Comentarios</p>
       <p>{{ post._count.retweets }} Retweets</p>
       <p>{{ post._count.saves }} Guardados</p>
@@ -32,7 +32,6 @@
     post: Post
   }>()
 
-  
   const { push } = useRouter()
   const { path } = useRoute()
   const clickToPost = () => {
@@ -51,6 +50,9 @@
     font-family: Noto Sans;
     font-size: 16px;
     font-weight: 400;
+  }
+  .post-image {
+    border-radius: 8px;
   }
   .counters {
     display: flex;
