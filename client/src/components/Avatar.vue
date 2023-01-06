@@ -22,7 +22,6 @@ import { User } from "../types/Model";
       // Obteniendo a user del local storage
       const userRaw = <string>localStorage.getItem("user")
       const user = <User>JSON.parse(userRaw)
-      console.log(user)
       src.value = user.avatar
       alt.value = "user"
     }
