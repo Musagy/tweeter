@@ -1,33 +1,49 @@
 import { Ref } from "vue"
 import { useToast } from "vue-toastification"
 import axios from "axios"
-import { Post } from "../types/Model"
+import { Post, AdditionalContent } from "../types/Model"
 
 const toast = useToast()
 
 const { VITE_API } = import.meta.env
 
 export const createPost = async (
-  content: Ref<String>,
-  isPublic: Ref<boolean>,
-  additionalContent?: {
-    parentId?: number
-    retweetId?: number
-  }
-): Promise<Post | undefined> => {
+  content: string,
+  isPublic: boolean,
+  image: File | null,
+  additionalContent?: AdditionalContent
+): Promise<any> => {
   // Comprobar si el no hay nada en el post
   const Authorization = <string>localStorage.getItem("token")
 
-  if (!content.value) {
+  if (!content) {
     toast.warning("Post vacio")
   }
+
+  const formData = new FormData()
+  console.log(image, content, isPublic)
+
+  if (image !== null) formData.append("image", image)
+  formData.append("content", content)
+  formData.append("isPublic", isPublic ? "true" : "")
+  if (additionalContent)
+    Object.keys(additionalContent).forEach((key: string) => {
+      if(additionalContent[key])
+      formData.append(key, additionalContent[key].toString())
+    })
+
+  let form = {}
+  formData.forEach((v, k) => {
+    form = { ...form, [k]: v }
+  })
+  console.log(form)
 
   // Hacer petición
   try {
     const { status, data } = await axios.post(
       VITE_API + "/post/create",
-      { content: content.value, public: isPublic.value, ...additionalContent },
-      { headers: { Authorization } }
+      formData,
+      { headers: { Authorization, "Content-Type": "multipart/form-data" } }
     )
     // Si sale un resultado distinto de 200
     if (status !== 200) {
@@ -35,9 +51,9 @@ export const createPost = async (
     }
     // si todo sale bien
     toast(data.message)
-    content.value = ""
     return data.post
   } catch (err: any) {
+    console.log(err)
     toast.error(err.response.data.error)
   }
 }

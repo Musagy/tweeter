@@ -54,3 +54,8 @@ export type Trends = {
     posts: number
   }
 }
+export interface AdditionalContent {
+  parentId?: string
+  retweetId?: string
+  [key: string]: any
+}

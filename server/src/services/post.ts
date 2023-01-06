@@ -15,6 +15,7 @@ export const createPost = async (
           name: true,
           username: true,
           id: true,
+          avatar: true,
         },
       },
       _count: {

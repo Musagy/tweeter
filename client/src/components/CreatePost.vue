@@ -4,12 +4,26 @@
     <hr />
     <form class="form-ctn" @submit.prevent="handlerSubmit" ref="form">
       <Avatar userId="user" />
-      <PostContentInput @setContent="setContent" />
+      <div>
+        <PostContentInput @setContent="setContent" />
+        <div class="display-image">
+          <button type="button" class="delete-image" @click="deleteImage">
+            <span class="material-symbols-outlined"> close </span>
+          </button>
+          <img v-if="imageUrl !== ''" :src="imageUrl" />
+        </div>
+      </div>
       <div class="post-setting">
         <div class="post-custom">
-          <button @click="addImage">
+          <button @click="openFileSelector" type="button">
             <span class="material-symbols-outlined"> image </span>
           </button>
+          <input
+            type="file"
+            ref="fileInput"
+            @change="setImage"
+            style="display: none"
+          />
           <PrivacyBtn @setPublic="setPublic" />
         </div>
         <button type="submit">Tweet</button>
@@ -19,18 +33,15 @@
 </template>
 
 <script setup lang="ts">
-  import { defineComponent, ref } from "vue"
+  import { ref, watch } from "vue"
   import PrivacyBtn from "./PrivacyBtn.vue"
   import PostContentInput from "./PostContentInput.vue"
   import * as PostQueries from "../utils/postQueries"
   import Avatar from "./Avatar.vue"
-  import { Post } from "../types/Model"
+  import { Post, AdditionalContent } from "../types/Model"
 
   const { additionalContent, title } = defineProps<{
-    additionalContent?: {
-      parentId?: number
-      retweetId?: number
-    }
+    additionalContent?: AdditionalContent
     title?: string
   }>()
 
@@ -40,27 +51,51 @@
   }>()
 
   // Referencia del contenido del post
-  const instance = ref<typeof defineComponent>()
   const content = ref("")
+  const image = ref<File | null>(null)
   const isPublic = ref(true)
+
+  const imageUrl = ref("")
+
+  const fileInput = ref<HTMLInputElement | null>(null)
+  const openFileSelector = () => fileInput.value?.click()
+
   const form = ref<HTMLFormElement>()
-  const addImage = () => {}
 
   const setPublic = (value: boolean) => (isPublic.value = value)
   const setContent = (value: string) => (content.value = value)
+  const setImage = (event: Event) => {
+    // Accede al archivo seleccionado a través del evento "change"
+    const files = (event.target as HTMLInputElement).files
+
+    if (files == null) return null
+
+    const file = files[0]
+    image.value = file
+  }
+  const deleteImage = () => (image.value = null)
+  watch(image, () => {
+    if (!image.value) return (imageUrl.value = "")
+    imageUrl.value = URL.createObjectURL(image.value)
+  })
 
   const handlerSubmit = async () => {
     const newPost = await PostQueries.createPost(
-      content,
-      isPublic,
-      additionalContent
+      content.value,
+      isPublic.value,
+      image.value,
+      {
+        parentId: additionalContent?.parentId,
+        retweetId: additionalContent?.retweetId,
+      }
     )
     if (!newPost) return null
 
     emit("unshifter", newPost)
-    
+
     if (emit("afterAll") !== null) emit("afterAll")
     
+    deleteImage()
     form.value?.reset()
   }
 </script>
@@ -91,9 +126,26 @@
     gap: 12px;
   }
   img {
+    width: 100%;
+    /* height: 40px; */
+    border-radius: 8px;
+  }
+  .display-image {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .delete-image {
+    background-color: #0008;
+    border: none;
+    padding: 4px 0px 0;
+    border-radius: 90px;
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    position: absolute;
+    color: white;
+    right: 10px;
+    top: 10px;
   }
   .post-setting {
     font-family: Noto Sans;

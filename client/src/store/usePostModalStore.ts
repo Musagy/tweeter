@@ -1,14 +1,11 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import { Post } from "../types/Model"
+import { AdditionalContent, Post } from "../types/Model"
 
 export const usePostModalStore = defineStore("post modal", () => {
   // Declarando estados para el usuario
   const isOpen = ref<boolean>(false)
-  const options = ref<{
-    parentId?: number
-    retweetId?: number
-  }>({})
+  const options = ref<AdditionalContent>({})
   const unshifter = ref<(newPost: Post) => void>((_newPost: Post) => {})
 
   /**

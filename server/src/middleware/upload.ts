@@ -11,11 +11,11 @@ export const upload = async (
 
   if (response === null) return next()
 
-  if (typeof response === "string") return res.status(400).send(response)
+  if (typeof response === "string") return res.status(400).json({error: response})
 
   const image = await S3Services.uploadImage(response)
 
-  if (typeof image === "string") return res.status(400).json(image)
+  if (typeof image === "string") return res.status(400).json({error: image})
 
   req.body.image = image.url
 
