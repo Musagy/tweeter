@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { encrypt, verified } from "../utils/bcryptHandle"
 import { String } from "../interfaces/typeNullable"
 
 const prisma = new PrismaClient()
@@ -68,13 +69,73 @@ export const getUserById = async (UserId: String) => {
     where: {
       id: userId,
     },
-    include:{
+    include: {
       _count: {
-        select:{
+        select: {
           following: true,
           followers: true,
-        }
-      }
-    }
+        },
+      },
+    },
   })
+}
+
+export const changePassword = async (
+  currentPassword: string,
+  newPassword: string,
+  username: string
+) => {
+  try {
+    // Primero buscamos al usuario en la base de datos
+    const user = await prisma.users.findUnique({ where: { username } })
+
+    if (!user) return "Usuario no encontrado"
+
+    // Luego comparamos la contraseña actual con la contraseña almacenada en la base de datos
+    const isPasswordCorrect = await verified(currentPassword, user.password)
+
+    if (!isPasswordCorrect) return "La contraseña es incorrecta"
+
+    // Si la contraseña es correcta, encriptamos la nueva contraseña y la actualizamos en la base de datos
+    const hashedNewPassword = await encrypt(newPassword)
+
+    await prisma.users.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedNewPassword,
+      },
+    })
+
+    return "Contraseña cambiada correctamente"
+  } catch (error) {
+    console.log(error)
+    return "No se pudo cambiar la contraseña"
+  }
+}
+
+export const changeImages = async ({
+  UserId,
+  avatar,
+  banner,
+}: {
+  UserId: string
+  avatar?: String
+  banner?: String
+}) => {
+  try {
+    const userId = +UserId
+
+    const data: { avatar?: string; banner?: string } = {}
+    if (avatar) data.avatar = avatar
+    if (banner) data.banner = banner
+
+    await prisma.users.update({ where: { id: userId }, data })
+
+    return "Cambio de imagen(es) Completo"
+  } catch (error) {
+    console.log(error)
+    return "No se pudo cambiar la(s) imagen(es)"
+  }
 }

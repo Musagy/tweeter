@@ -52,3 +52,36 @@ export const isFollower: RequestHandler = async ({ params, body }, res) => {
     return handleHttp(res, "No se pudo comprobar su estado del usuario", e)
   }
 }
+
+export const changePassword: RequestHandler = async ({ body }, res) => {
+  const { currentPassword, newPassword, username } = body
+
+  try {
+    const message = await UserServices.changePassword(
+      currentPassword,
+      newPassword,
+      username
+    )
+
+    if (message !== "Contraseña cambiada correctamente")
+      return res.status(401).json({ error: message })
+
+    return res.status(200).json({ message })
+  } catch (e) {
+    return handleHttp(res, "No se pudo cambiar la contraseña", e)
+  }
+}
+export const changeImages: RequestHandler = async ({ body }, res) => {
+  const { avatar, banner } = body
+  console.log(avatar, banner)
+  try {
+    const message = await UserServices.changeImages({
+      avatar: avatar,
+      banner: banner,
+      UserId: body["user"],
+    })
+    res.status(200).json({ message, imageUpdate: { avatar, banner } })
+  } catch (e) {
+    return handleHttp(res, "No se pudo cambiar la(s) imagen(es)", e)
+  }
+}

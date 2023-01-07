@@ -21,22 +21,15 @@ export const createPost = async (
   }
 
   const formData = new FormData()
-  console.log(image, content, isPublic)
 
   if (image !== null) formData.append("image", image)
   formData.append("content", content)
   formData.append("isPublic", isPublic ? "true" : "")
   if (additionalContent)
     Object.keys(additionalContent).forEach((key: string) => {
-      if(additionalContent[key])
-      formData.append(key, additionalContent[key].toString())
+      if (additionalContent[key])
+        formData.append(key, additionalContent[key].toString())
     })
-
-  let form = {}
-  formData.forEach((v, k) => {
-    form = { ...form, [k]: v }
-  })
-  console.log(form)
 
   // Hacer petición
   try {

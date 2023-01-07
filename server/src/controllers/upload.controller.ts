@@ -19,7 +19,19 @@ export const uploadImageQuery: RequestHandler = async (req, res) => {
 
   const image = await S3Services.uploadImage(response)
 
-  if(typeof image === "string") return res.status(400).json(image)
+  if (typeof image === "string") return res.status(400).json(image)
 
   return res.status(200).json(image)
+}
+
+export const uploadImages = async (req: Request, images: string[]) => {
+  const imagesFiles = images.map(key => {
+    if (!req.files) return null
+    const image = <fileUpload.UploadedFile>req.files[key]
+    // console.log(image)
+    if (image === undefined) return null
+    if (image.truncated) return "Has excedido el limite de peso de imagenes"
+    return image
+  })
+  return imagesFiles
 }
