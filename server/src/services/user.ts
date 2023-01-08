@@ -110,32 +110,34 @@ export const changePassword = async (
 
     return "Contraseña cambiada correctamente"
   } catch (error) {
-    console.log(error)
     return "No se pudo cambiar la contraseña"
   }
 }
 
-export const changeImages = async ({
+export const updateUser = async ({
   UserId,
+  desc,
   avatar,
   banner,
 }: {
   UserId: string
+  desc: String
   avatar?: String
   banner?: String
 }) => {
   try {
     const userId = +UserId
 
-    const data: { avatar?: string; banner?: string } = {}
+    const data: { avatar?: string; banner?: string; desc: string | null } = {
+      desc: desc ? desc : null,
+    }
     if (avatar) data.avatar = avatar
     if (banner) data.banner = banner
 
     await prisma.users.update({ where: { id: userId }, data })
 
-    return "Cambio de imagen(es) Completo"
+    return "Se actualizo al usuario correctamente"
   } catch (error) {
-    console.log(error)
-    return "No se pudo cambiar la(s) imagen(es)"
+    return "No se pudo actualizar al usuario"
   }
 }

@@ -88,7 +88,7 @@ export const getPostPage = async ({
 
   // Datos de autor para que vaya en el post
   const include: Prisma.PostsInclude = {
-    author: { select: { name: true, username: true, id: true, avatar: true } },
+    author: { select: { name: true, username: true, avatar: true } },
     _count: { select: { replies: true, retweets: true, saves: true } },
     favorites: { where: { userId: searcher } },
     retweets: { where: { authorId: searcher } },
@@ -103,7 +103,7 @@ export const getPostPage = async ({
     },
     retweeting: {
       include: {
-        author: { select: { name: true, username: true, id: true } },
+        author: { select: { name: true, username: true, avatar: true } },
         _count: { select: { replies: true, retweets: true, saves: true } },
         favorites: { where: { userId: searcher } },
         retweets: { where: { authorId: searcher } },
@@ -111,7 +111,7 @@ export const getPostPage = async ({
         replies: {
           take: 3,
           include: {
-            author: { select: { username: true } },
+            author: { select: { username: true, avatar: true } },
             favorites: { where: { userId: searcher } },
             _count: { select: { favorites: true } },
           },

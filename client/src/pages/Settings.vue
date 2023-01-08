@@ -9,6 +9,13 @@
     <main>
       <h1>Ajustes de cuenta</h1>
       <ChangePassword />
+      <h2>Editar descripción de perfil</h2>
+      <input
+        type="text"
+        id="desc"
+        v-model="userUpdateData.desc"
+        placeholder="Agrega una descripcion a tu cuenta"
+      />
       <div class="changer">
         <div>
           <h2>Editar foto de perfil</h2>
@@ -19,7 +26,6 @@
         </div>
         <img class="avatar" :src="avatarUrl" alt="user-avatar" />
       </div>
-
       <div class="changer">
         <div>
           <h2>Editar banner de perfil</h2>
@@ -32,7 +38,6 @@
           <img class="banner" :src="bannerUrl" alt="user-banner" />
         </div>
       </div>
-
       <button @click="saveChanges" class>Guardar</button>
     </main>
   </Layout>
@@ -40,7 +45,7 @@
 
 <script setup lang="ts">
   import axios from "axios"
-  import { onMounted, Ref, ref, watch } from "vue"
+  import { onMounted, Ref, ref } from "vue"
   import { useToast } from "vue-toastification"
   import ChangePassword from "../components/changePassword.vue"
   import Layout from "../components/Layout.vue"
@@ -54,10 +59,11 @@
 
   const avatarUrl = ref("https://osu.ppy.sh/images/layout/avatar-guest@2x.png")
   const bannerUrl = ref("")
-  const userUpdateDataDefault = { avatar: null, banner: null }
+  const userUpdateDataDefault = { avatar: null, banner: null, desc: "" }
   const userUpdateData = ref<{
     avatar: File | null
     banner: File | null
+    desc: string | null
     [key: string]: any
   }>(userUpdateDataDefault)
 
@@ -66,10 +72,8 @@
     const user = <User>JSON.parse(userRaw)
     if (user.avatar) avatarUrl.value = user.avatar
     if (user.banner) bannerUrl.value = user.banner
+    if (user.desc) userUpdateData.value.desc = user.desc
   })
-
-  const authStore = useAuthStore()
-  const { token, user } = storeToRefs(authStore)
 
   const setImage = (event: Event, prop: string, stateUrl: Ref<string>) => {
     const files = (event.target as HTMLInputElement).files
@@ -84,11 +88,15 @@
   const setNewAvatar = (event: Event) => setImage(event, "avatar", avatarUrl)
   const setNewBanner = (event: Event) => setImage(event, "banner", bannerUrl)
 
+  const authStore = useAuthStore()
+  const { token, user } = storeToRefs(authStore)
+
   const saveChanges = async () => {
     const formData = new FormData()
-    const { avatar, banner } = userUpdateData.value
+    const { avatar, banner, desc } = userUpdateData.value
     if (avatar) formData.append("avatar", avatar)
     if (banner) formData.append("banner", banner)
+    if (desc !== user.value?.desc) formData.append("desc", desc ?? "")
 
     try {
       const { status, data } = await axios.patch(
@@ -107,9 +115,8 @@
       }
       // si todo sale bien
       toast(data.message)
-      user.value = {...user.value, ...data.imageUpdate }
+      user.value = { ...user.value, ...data.imageUpdate }
     } catch (err: any) {
-      console.log(err)
       toast.error(err.response.data.error)
     }
   }
@@ -187,5 +194,25 @@
     border: none;
     border-radius: 8px;
     align-self: center;
+  }
+  input {
+    background-color: white;
+    border: none;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+
+    margin-top: -12px;
+    max-width: 720px;
+    width: 100%;
+    align-self: center;
+  }
+
+  input::placeholder {
+    background-color: white;
+    color: #bdbdbd;
+  }
+  input:focus {
+    outline: none;
   }
 </style>

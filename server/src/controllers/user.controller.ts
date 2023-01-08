@@ -71,13 +71,13 @@ export const changePassword: RequestHandler = async ({ body }, res) => {
     return handleHttp(res, "No se pudo cambiar la contraseña", e)
   }
 }
-export const changeImages: RequestHandler = async ({ body }, res) => {
-  const { avatar, banner } = body
-  console.log(avatar, banner)
+export const updateUser: RequestHandler = async ({ body }, res) => {
+  const { avatar, banner, desc } = body
   try {
-    const message = await UserServices.changeImages({
+    const message = await UserServices.updateUser({
       avatar: avatar,
       banner: banner,
+      desc: desc,
       UserId: body["user"],
     })
     res.status(200).json({ message, imageUpdate: { avatar, banner } })

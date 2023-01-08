@@ -31,7 +31,6 @@ export const uploadMany = async (
   const imagesName = ["avatar", "banner"]
 
   const images = await uploadImages(req, imagesName)
-  console.log(images)
 
   if (images.some(image => typeof image === "string")) {
     return res

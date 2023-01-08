@@ -47,7 +47,7 @@
     font-size: 12px;
     font-weight: 500;
 
-    color: #BDBDBD;
+    color: #bdbdbd;
     grid-column-start: 2;
   }
 </style>

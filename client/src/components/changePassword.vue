@@ -50,7 +50,6 @@
     const userRaw = <string>localStorage.getItem("user")
     const user = <User>JSON.parse(userRaw)
     const { username } = user
-    console.log(stateNewPassword.value)
 
     const { VITE_API } = import.meta.env
     const url = VITE_API + "/user/change-password"

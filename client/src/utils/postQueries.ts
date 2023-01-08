@@ -46,7 +46,6 @@ export const createPost = async (
     toast(data.message)
     return data.post
   } catch (err: any) {
-    console.log(err)
     toast.error(err.response.data.error)
   }
 }

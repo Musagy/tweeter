@@ -11,6 +11,6 @@ router.get("/is-follower/:userId", checkJwt, userCtrl.isFollower)
 router.get("/:id", userCtrl.getUserById)
 
 router.patch("/change-password", userCtrl.changePassword)
-router.patch("/change-images", checkJwt, uploadMany, userCtrl.changeImages)
+router.patch("/change-images", checkJwt, uploadMany, userCtrl.updateUser)
 
 export { router }
