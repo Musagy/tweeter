@@ -34,8 +34,8 @@
             <input type="file" id="banner" @change="setNewBanner" />
           </label>
         </div>
-        <div class="banner-ctn">
-          <img class="banner" :src="bannerUrl" alt="user-banner" />
+        <div class="banner-ctn" :style="!bannerUrl ? {backgroundColor: '#505c6f'}: {}">
+          <img v-if="bannerUrl" class="banner" :src="bannerUrl" alt="user-banner" />
         </div>
       </div>
       <button @click="saveChanges" class>Guardar</button>
