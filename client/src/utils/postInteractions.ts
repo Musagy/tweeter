@@ -2,6 +2,7 @@ import axios from "axios"
 import { useToast } from "vue-toastification"
 import { ToastID } from "vue-toastification/dist/types/types"
 import { usePostModalStore } from "../store/usePostModalStore"
+import authHandler from "./authHandler"
 
 export type Interaction = {
   icon: string
@@ -37,7 +38,9 @@ const createRetweet = async (refPostId: number, retweetId?: number) => {
       toast("Retweet Creado")
       return data.post.id
     } catch (err: any) {
-      toast.error(err.response.data.error)
+      authHandler(err, () => {
+        toast.error(err.response.data.error)
+      })
     }
   } else {
     try {
@@ -52,7 +55,9 @@ const createRetweet = async (refPostId: number, retweetId?: number) => {
       toast("Retweet Eliminado")
       return 0
     } catch (err: any) {
-      toast.error(err.response.data)
+      authHandler(err, () => {
+        toast.error(err.response.data)
+      })
     }
   }
 }
@@ -69,7 +74,9 @@ const toggle = async (refPostId: number, type: "like" | "save") => {
     // si todo sale bien
     toast(data.message)
   } catch (err: any) {
-    toast.error(err.response.data.error)
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+    })
   }
 }
 const toggleLike = (refPostId: number) => toggle(refPostId, "like")

@@ -11,12 +11,17 @@
         <FiltersCtn @setFilter="setFilter" :filters="filters" />
         <main>
           <template
-            v-if="postsFound.length > 0"
+            v-if="postsFound[0].length > 0"
             v-for="loadedPosts in postsFound"
           >
             <Post v-for="post in loadedPosts" :post="post" :key="post.id" />
           </template>
           <Loading v-else />
+          <LoadMorePostBtn
+            v-if="postsFound[0].length > 0"
+            @setAllPagePost="pushInAllPagePost"
+            :queryPost="fetchPost"
+          />
         </main>
       </section>
     </main>
@@ -35,6 +40,8 @@
   import { User, Post as PostType } from "../../types/Model"
   import { getPostbyUserId } from "../../utils/postQueries"
   import Loading from "../../components/Loading.vue"
+  import authHandler from "../../utils/authHandler"
+  import LoadMorePostBtn from "../../components/LoadMorePostBtn.vue"
 
   const { VITE_API } = import.meta.env
   const toast = useToast()
@@ -45,10 +52,11 @@
   onMounted(async () => {
     try {
       const { data } = await axios.get(VITE_API + "/user/" + params.id)
-
       user.value = <User>data
     } catch (err: any) {
-      toast.error(err.response.data)
+      authHandler(err, () => {
+        toast.error(err.response.data)
+      })
     }
   })
 
@@ -76,20 +84,24 @@
   const filterType = ref<Filter>("Tweets")
   const setFilter = (filter: Filter) => (filterType.value = filter)
 
-  const postsFound = ref<PostType[][]>([])
+  const postsFound = ref<PostType[][]>([[]])
 
-  const fetchPost = async (filter: Filter, page: number = 1) => {
-    const postPage = await getPostbyUserId(filter, +params.id, page)
-    if (postPage) postsFound.value.push(postPage)
+  const fetchPost = async (page: number = 1) => {
+    return await getPostbyUserId(filterType.value, +params.id, page)
   }
-  onMounted(() => {
-    fetchPost(filterType.value, 1)
+  onMounted(async () => {
+    const postPage = await fetchPost()
+    if (postPage) postsFound.value[0] = postPage
   })
 
-  watch(filterType, newFilter => {
-    postsFound.value = []
-    fetchPost(newFilter, 1)
+  watch(filterType, async newFilter => {
+    postsFound.value = [[]]
+    const postPage = await fetchPost()
+    if (postPage) postsFound.value[0] = postPage
   })
+
+  const pushInAllPagePost = (newPosts: PostType[]) =>
+    postsFound.value.push(newPosts)
 </script>
 
 <style scoped>

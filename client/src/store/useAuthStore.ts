@@ -3,6 +3,9 @@ import { ref, watch } from "vue"
 import { User } from "../types/Model"
 import { LoginResponse } from "../types/LoginForm"
 import { useRouter } from "vue-router"
+import axios from "axios"
+
+const { VITE_API } = import.meta.env
 
 export const useAuthStore = defineStore("auth", () => {
   // Declarando estados para el usuario
@@ -43,5 +46,14 @@ export const useAuthStore = defineStore("auth", () => {
     user.value = null
     router.push("/login")
   }
-  return { token, user, login, logout }
+
+  async function setNewToken() {
+    const { data } = await axios.get<{ newToken: string }>(
+      VITE_API + "/auth/get-new-token",
+      { headers: { Authorization: token.value } }
+    )
+    token.value = data.newToken
+    localStorage.setItem("token", data.newToken)
+  }
+  return { token, user, login, logout, setNewToken }
 })

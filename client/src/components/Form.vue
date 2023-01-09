@@ -20,6 +20,7 @@
   import { useAuthStore } from "../store/useAuthStore"
   import { useRouter } from "vue-router"
   import { Input } from "../utils/signForms"
+  import authHandler from "../utils/authHandler"
 
   const { inputs, typeForm } = defineProps<{
     inputs: Input[]
@@ -56,10 +57,12 @@
 
       router.push("/")
     } catch (err: any) {
-      if (err.response.data) {
-        errHandler.value = err.response.data.error
-        toast.error(errHandler.value)
-      }
+      authHandler(err, () => {
+        if (err.response.data) {
+          errHandler.value = err.response.data
+          toast.error(errHandler.value)
+        }
+      })
     }
   }
 </script>

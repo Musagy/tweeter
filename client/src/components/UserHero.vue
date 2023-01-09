@@ -45,6 +45,7 @@
   import { onMounted, ref } from "vue"
   import { useToast } from "vue-toastification"
   import { User } from "../types/Model"
+  import authHandler from "../utils/authHandler"
   import Avatar from "./Avatar.vue"
 
   const { user } = defineProps<{
@@ -78,7 +79,9 @@
       toast(data.message)
       isFollower.value = !isFollower.value
     } catch (err: any) {
-      toast.error(err.response.data.error)
+      authHandler(err, () => {
+        toast.error(err.response.data.error)
+      })
     }
   }
 </script>

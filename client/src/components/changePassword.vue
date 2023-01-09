@@ -27,6 +27,7 @@
   import { ref } from "vue"
   import { useToast } from "vue-toastification"
   import { User } from "../types/Model"
+  import authHandler from "../utils/authHandler"
 
   const toast = useToast()
   const newPasswordDefault = {
@@ -61,12 +62,14 @@
       })
       toast(data.message)
     } catch (err: any) {
-      if (err.response.data) {
-        toast.error(err.response.data.error)
-      }
+      authHandler(err, () => {
+        if (err.response.data) {
+          toast.error(err.response.data.error)
+        }
+        stateNewPassword.value = newPasswordDefault
+        formChangePassword.value?.reset()
+      })
     }
-    stateNewPassword.value = newPasswordDefault
-    formChangePassword.value?.reset()
   }
 </script>
 

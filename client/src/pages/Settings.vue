@@ -34,8 +34,16 @@
             <input type="file" id="banner" @change="setNewBanner" />
           </label>
         </div>
-        <div class="banner-ctn" :style="!bannerUrl ? {backgroundColor: '#505c6f'}: {}">
-          <img v-if="bannerUrl" class="banner" :src="bannerUrl" alt="user-banner" />
+        <div
+          class="banner-ctn"
+          :style="!bannerUrl ? { backgroundColor: '#505c6f' } : {}"
+        >
+          <img
+            v-if="bannerUrl"
+            class="banner"
+            :src="bannerUrl"
+            alt="user-banner"
+          />
         </div>
       </div>
       <button @click="saveChanges" class>Guardar</button>
@@ -52,6 +60,7 @@
   import { User } from "../types/Model"
   import { useAuthStore } from "../store/useAuthStore"
   import { storeToRefs } from "pinia"
+  import authHandler from "../utils/authHandler"
 
   const toast = useToast()
 
@@ -117,7 +126,9 @@
       toast(data.message)
       user.value = { ...user.value, ...data.imageUpdate }
     } catch (err: any) {
-      toast.error(err.response.data.error)
+      authHandler(err, () => {
+        toast.error(err.response.data.error)
+      })
     }
   }
 </script>

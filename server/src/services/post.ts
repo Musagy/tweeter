@@ -80,11 +80,11 @@ type GetPostPageArgs = {
 export const getPostPage = async ({
   where = {},
   page = 1,
-  take = 15,
+  take = 10,
   orderBy = { favorites: { _count: "desc" } },
   searcher,
 }: GetPostPageArgs) => {
-  const skip = (page - 1) * 15
+  const skip = (page - 1) * take
 
   // Datos de autor para que vaya en el post
   const include: Prisma.PostsInclude = {
@@ -211,7 +211,7 @@ export const verifyAuthority = async (postId: string, userId: string) => {
 export const searchPost = async (
   search: string,
   page: String = "1",
-  take: String = "15",
+  take: String = "10",
   filter: "Top" | "Lastest" | "People" | "Media"
 ) => {
   // Esta constante almacenara los post que retornara getPostPage con los ajustes para el buscador

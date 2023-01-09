@@ -60,3 +60,7 @@ export const loginUser = async ({
   }
   return data
 }
+
+export const getToken = (userId: string) => {
+  return "Bearer " + generateToken(userId)
+}

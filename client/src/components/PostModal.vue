@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from "pinia"
-  import { computed, watch } from "vue"
+  import { computed } from "vue"
   import { usePostModalStore } from "../store/usePostModalStore"
   import CreatePost from "./CreatePost.vue"
 

@@ -9,9 +9,15 @@
   </div>
 </template>
 
+<script setup lang="ts">
+const {height} = defineProps<{
+  height?:string
+}>()
+</script>
+
 <style scoped>
   #loading {
-    height: 300px;
+    height: v-bind("height ?? '300px'");
     display: grid;
 
     align-items: end;

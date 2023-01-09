@@ -11,7 +11,7 @@
       <ForYouPage />
     </main>
     <aside>
-      <Trends/>
+      <Trends />
     </aside>
   </Layout>
 </template>
@@ -20,7 +20,7 @@
   import Layout from "../components/Layout.vue"
   import CreatePost from "../components/CreatePost.vue"
   import ForYouPage from "../components/ForYouPage.vue"
-  import Trends from '../components/Trends.vue';
+  import Trends from "../components/Trends.vue"
   import { useUserNewPosts } from "../store/useUserNewPosts"
   import { Post } from "../types/Model"
 

@@ -17,7 +17,7 @@ const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     }
   } catch (e) {
     res.status(400)
-    res.send("Sección no valida")
+    res.send("Sección caducada o no valida")
   }
 }
 

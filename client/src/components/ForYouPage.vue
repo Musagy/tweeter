@@ -4,6 +4,11 @@
       <Post v-for="post in posts" :key="post.id" :post="post" />
     </template>
     <Loading v-else />
+    <LoadMorePostBtnVue
+      v-if="allGroupsPost[1].length > 0"
+      @setAllPagePost="pushInAllPagePost"
+      :queryPost="PostQueries.postsOfFYP"
+    />
   </section>
 </template>
 
@@ -15,6 +20,7 @@
   import { useUserNewPosts } from "../store/useUserNewPosts"
   import { storeToRefs } from "pinia"
   import Loading from "./Loading.vue"
+  import LoadMorePostBtnVue from "./LoadMorePostBtn.vue"
 
   const allPagePost = ref<PostType[][]>([[]])
 
@@ -30,8 +36,11 @@
 
   onMounted(async () => {
     const initialPosts = await PostQueries.postsOfFYP()
-    allPagePost.value = [initialPosts]
+    if (initialPosts !== undefined) allPagePost.value = [initialPosts]
   })
+
+  const pushInAllPagePost = (newPosts: PostType[]) =>
+    allPagePost.value.push(newPosts)
 </script>
 
 <style scoped>

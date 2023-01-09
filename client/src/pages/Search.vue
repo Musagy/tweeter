@@ -20,12 +20,16 @@
       </form>
 
       <div class="results">
-        <template
-          v-if="postsFound.length > 0"
-          v-for="loadedPosts in postsFound"
-        >
+        <Loading v-if="loading" />
+        <p v-else-if="postsFound[0].length === 0">Busca algo</p>
+        <template v-else v-for="loadedPosts in postsFound">
           <Post v-for="post in loadedPosts" :post="post" :key="post.id" />
         </template>
+        <LoadMorePostBtn
+          v-if="postsFound[0].length > 0"
+          @setAllPagePost="pushInAllPagePost"
+          :queryPost="fetchPost"
+        />
       </div>
     </main>
   </Layout>
@@ -39,6 +43,8 @@
   import { useRoute, useRouter } from "vue-router"
   import { Post as PostType } from "../types/Model"
   import { searchPost } from "../utils/postQueries"
+  import LoadMorePostBtn from "../components/LoadMorePostBtn.vue"
+  import Loading from "../components/Loading.vue"
 
   const filters = [
     {
@@ -62,29 +68,42 @@
   const filterType = ref("Top")
   const setFilter = (filter: string) => (filterType.value = filter)
 
-  const postsFound = ref<PostType[][]>([])
+  const postsFound = ref<PostType[][]>([[]])
 
   const whatSearch = ref<string>("")
+  const loading = ref(false)
 
   const { replace } = useRouter()
   const { params } = useRoute()
 
-  const handler = () => {
+  const handler = async () => {
     replace("/search/" + whatSearch.value)
-    fetchPost()
+    loading.value = true
+    postsFound.value = [[]]
+    const res = await fetchPost()
+    if (res !== undefined) {
+      postsFound.value[0] = res
+      loading.value = false
+    }
   }
-  const fetchPost = async () => {
-    postsFound.value = []
-    const res = await searchPost(whatSearch.value, filterType.value)
-    postsFound.value.push(res)
+  const fetchPost = async (page: number = 1) => {
+    return await searchPost(whatSearch.value, filterType.value, page)
   }
 
-  onMounted(() => {
+  onMounted(async () => {
     if (params?.search) {
+      loading.value = true
       whatSearch.value = `${params?.search}`
-      fetchPost()
+      const res = await fetchPost()
+      if (res !== undefined) {
+        postsFound.value[0] = res
+        loading.value = false
+      }
     }
   })
+
+  const pushInAllPagePost = (newPosts: PostType[]) =>
+    postsFound.value.push(newPosts)
 </script>
 
 <style scoped>
@@ -96,7 +115,7 @@
     max-width: 745px;
 
     display: flex;
-    gap:32px;
+    gap: 32px;
     width: 100%;
 
     background: #ffffff;

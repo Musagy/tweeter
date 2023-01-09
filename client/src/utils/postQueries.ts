@@ -1,7 +1,7 @@
-import { Ref } from "vue"
 import { useToast } from "vue-toastification"
 import axios from "axios"
 import { Post, AdditionalContent } from "../types/Model"
+import authHandler from "./authHandler"
 
 const toast = useToast()
 
@@ -46,11 +46,13 @@ export const createPost = async (
     toast(data.message)
     return data.post
   } catch (err: any) {
-    toast.error(err.response.data.error)
+    authHandler(err, () => toast.error(err.response.data.error))
   }
 }
 
-export const postsOfFYP = async (page: number = 1): Promise<Post[] | []> => {
+export const postsOfFYP = async (
+  page: number = 1
+): Promise<Post[] | [] | undefined> => {
   try {
     const Authorization = <string>localStorage.getItem("token")
     const newPost = await axios.post(
@@ -61,8 +63,10 @@ export const postsOfFYP = async (page: number = 1): Promise<Post[] | []> => {
 
     return newPost.data.posts
   } catch (err: any) {
-    toast.error(err.response.data.error)
-    return []
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+      return []
+    })
   }
 }
 export const getTrends = async () => {
@@ -71,8 +75,10 @@ export const getTrends = async () => {
 
     return data.trends
   } catch (err: any) {
-    toast.error(err.response.data.error)
-    return []
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+      return []
+    })
   }
 }
 
@@ -82,20 +88,34 @@ export const getPostById = async (postId: number) => {
 
     return data.post
   } catch (err: any) {
-    toast.error(err.response.data.error)
-    return []
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+      return []
+    })
   }
 }
 
-export const searchPost = async (content: string, filter: string) => {
+export const searchPost = async (
+  content: string,
+  filter: string,
+  page: number = 1
+): Promise<Post[] | [] | undefined> => {
   try {
     const { data } = await axios.get(
-      VITE_API + "/post/search/" + content + "?filter=" + filter
+      VITE_API +
+        "/post/search/" +
+        content +
+        "?filter=" +
+        filter +
+        "&page=" +
+        page
     )
     return data
   } catch (err: any) {
-    toast.error(err.response.data.error)
-    return null
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+      return null
+    })
   }
 }
 export const bookmarksPost = async (
@@ -117,8 +137,10 @@ export const bookmarksPost = async (
     const postPage = <Post[]>data.map(({ post }: { post: Post }) => post)
     return postPage
   } catch (err: any) {
-    toast.error(err.response.data.error)
-    return null
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+      return null
+    })
   }
 }
 
@@ -126,7 +148,7 @@ export const getPostbyUserId = async (
   filter: "Tweets" | "TweetsNReplies" | "Media" | "Likes",
   userId: number,
   page: number
-) => {
+): Promise<[] | Post[] | undefined> => {
   const path = {
     Tweets: "filter=tweets",
     TweetsNReplies: "filter=tweets-and-replies",
@@ -143,7 +165,9 @@ export const getPostbyUserId = async (
     )
     return data
   } catch (err: any) {
-    toast.error(err.response.data.error)
-    return null
+    authHandler(err, () => {
+      toast.error(err.response.data.error)
+      return null
+    })
   }
 }

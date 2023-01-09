@@ -5,7 +5,7 @@ const { KEY_SECRET } = env
 
 const generateToken = (id: string) => {
   const jwt = sign({ id }, KEY_SECRET, {
-    expiresIn: 86400,
+    expiresIn: 259200,
   })
   return jwt
 }

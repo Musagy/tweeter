@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   import { onMounted, ref } from "vue"
-import { User } from "../types/Model";
+  import { User } from "../types/Model"
 
   const { photo, userId } = defineProps<{
     photo?: string | null
