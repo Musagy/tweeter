@@ -19,7 +19,7 @@
 <script setup lang="ts">
   import Layout from "../components/Layout.vue"
   import FiltersCtn from "../components/FilterCtn.vue"
-  import { Post as PostType } from "../types/Model"
+  import type { Post as PostType } from "../types/Model"
   import { onMounted, ref, watch } from "vue"
   import Post from "../components/Post.vue"
   import Loading from "../components/Loading.vue"

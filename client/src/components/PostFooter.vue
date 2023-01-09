@@ -25,7 +25,7 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router"
   import { usePostModalStore } from "../store/usePostModalStore"
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
   import Avatar from "./Avatar.vue"
   import Reply from "./Reply.vue"
 

@@ -38,7 +38,7 @@
   import PostContentInput from "./PostContentInput.vue"
   import * as PostQueries from "../utils/postQueries"
   import Avatar from "./Avatar.vue"
-  import { Post, AdditionalContent } from "../types/Model"
+  import type { Post, AdditionalContent } from "../types/Model"
 
   const { additionalContent, title } = defineProps<{
     additionalContent?: AdditionalContent
@@ -94,7 +94,7 @@
     emit("unshifter", newPost)
 
     if (emit("afterAll") !== null) emit("afterAll")
-    
+
     deleteImage()
     form.value?.reset()
   }

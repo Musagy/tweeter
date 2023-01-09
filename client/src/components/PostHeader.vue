@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
   import Avatar from "./Avatar.vue"
 
   const { post } = defineProps<{

@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
   import { ref } from "vue"
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
   import Loading from "./Loading.vue"
 
   const display = ref(true)

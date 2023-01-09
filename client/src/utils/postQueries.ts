@@ -1,6 +1,6 @@
 import { useToast } from "vue-toastification"
 import axios from "axios"
-import { Post, AdditionalContent } from "../types/Model"
+import type { Post, AdditionalContent } from "../types/Model"
 import authHandler from "./authHandler"
 
 const toast = useToast()

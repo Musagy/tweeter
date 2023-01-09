@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { onMounted, ref } from "vue"
-  import { Trends } from "../types/Model"
+  import type { Trends } from "../types/Model"
   import * as PostQueries from "../utils/postQueries"
 
   const trends = ref<Trends[]>([])

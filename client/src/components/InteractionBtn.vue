@@ -7,8 +7,8 @@
 
 <script setup lang="ts">
   import { ref } from "vue"
-  import { Post } from "../types/Model"
-  import { Interaction } from "../utils/postInteractions"
+  import type { Post } from "../types/Model"
+  import type { Interaction } from "../utils/postInteractions"
   const { interaction, post } = defineProps<{
     interaction: Interaction
     // initState: boolean

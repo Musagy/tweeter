@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  import { StyleValue } from "vue"
+  import type { StyleValue } from "vue"
   import NavComp from "./Nav.vue"
   import PostModal from "./PostModal.vue"
 

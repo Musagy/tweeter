@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
   import { interactions } from "../utils/postInteractions"
   import InteractionBtn from "./InteractionBtn.vue"
   import { useRoute, useRouter } from "vue-router"

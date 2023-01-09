@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import { AdditionalContent, Post } from "../types/Model"
+import type { AdditionalContent, Post } from "../types/Model"
 
 export const usePostModalStore = defineStore("post modal", () => {
   // Declarando estados para el usuario

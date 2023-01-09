@@ -41,7 +41,7 @@
   import Post from "../components/Post.vue"
   import FiltersCtn from "../components/FilterCtn.vue"
   import { useRoute, useRouter } from "vue-router"
-  import { Post as PostType } from "../types/Model"
+  import type { Post as PostType } from "../types/Model"
   import { searchPost } from "../utils/postQueries"
   import LoadMorePostBtn from "../components/LoadMorePostBtn.vue"
   import Loading from "../components/Loading.vue"

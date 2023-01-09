@@ -18,7 +18,11 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
+    "src/**/*.vue",
+    "env.d.ts",
+    "src/**/*",
     "src/**/*.vue"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "references": [{ "path": "./tsconfig.config.json" }]
 }

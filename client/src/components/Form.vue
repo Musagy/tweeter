@@ -14,12 +14,12 @@
 
 <script setup lang="ts">
   import { ref, type Ref } from "vue"
-  import { FormData } from "../types/LoginForm"
+  import type { FormData } from "../types/LoginForm"
   import axios from "axios"
   import { useToast } from "vue-toastification"
   import { useAuthStore } from "../store/useAuthStore"
   import { useRouter } from "vue-router"
-  import { Input } from "../utils/signForms"
+  import type { Input } from "../utils/signForms"
   import authHandler from "../utils/authHandler"
 
   const { inputs, typeForm } = defineProps<{
@@ -58,8 +58,9 @@
       router.push("/")
     } catch (err: any) {
       authHandler(err, () => {
+        console.log(err)
         if (err.response.data) {
-          errHandler.value = err.response.data
+          errHandler.value = err.response.data.error
           toast.error(errHandler.value)
         }
       })

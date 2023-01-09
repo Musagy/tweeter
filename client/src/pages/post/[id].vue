@@ -23,7 +23,7 @@
   import { useRoute } from "vue-router"
   import Layout from "../../components/Layout.vue"
   import Post from "../../components/Post.vue"
-  import { Post as PostType } from "../../types/Model"
+  import type { Post as PostType } from "../../types/Model"
   import { getPostById } from "../../utils/postQueries"
   import Loading from "../../components/Loading.vue"
 

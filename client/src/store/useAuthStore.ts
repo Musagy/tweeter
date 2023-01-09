@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
-import { User } from "../types/Model"
-import { LoginResponse } from "../types/LoginForm"
+import type { User } from "../types/Model"
+import type { LoginResponse } from "../types/LoginForm"
 import { useRouter } from "vue-router"
 import axios from "axios"
 

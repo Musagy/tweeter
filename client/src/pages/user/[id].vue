@@ -37,7 +37,7 @@
   import Post from "../../components/Post.vue"
   import Layout from "../../components/Layout.vue"
   import UserHero from "../../components/UserHero.vue"
-  import { User, Post as PostType } from "../../types/Model"
+  import type { User, Post as PostType } from "../../types/Model"
   import { getPostbyUserId } from "../../utils/postQueries"
   import Loading from "../../components/Loading.vue"
   import authHandler from "../../utils/authHandler"

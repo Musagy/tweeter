@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
   import Avatar from "./Avatar.vue"
   import { interactions } from "../utils/postInteractions"
   import { ref } from "vue"

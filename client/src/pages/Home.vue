@@ -22,7 +22,7 @@
   import ForYouPage from "../components/ForYouPage.vue"
   import Trends from "../components/Trends.vue"
   import { useUserNewPosts } from "../store/useUserNewPosts"
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
 
   const { insertNewPost } = useUserNewPosts()
   const unshifter = (newPost: Post) => insertNewPost(newPost)

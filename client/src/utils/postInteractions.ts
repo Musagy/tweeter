@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useToast } from "vue-toastification"
-import { ToastID } from "vue-toastification/dist/types/types"
+import type { ToastID } from "vue-toastification/dist/types/types"
 import { usePostModalStore } from "../store/usePostModalStore"
 import authHandler from "./authHandler"
 

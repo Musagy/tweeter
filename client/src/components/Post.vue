@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-  import { Post } from "../types/Model"
+  import type { Post } from "../types/Model"
   import PostFooter from "./PostFooter.vue"
   import PostHeader from "./PostHeader.vue"
   import PostMain from "./PostMain.vue"

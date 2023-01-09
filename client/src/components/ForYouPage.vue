@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { Post as PostType } from "../types/Model"
+  import type { Post as PostType } from "../types/Model"
   import Post from "./Post.vue"
   import { computed, onMounted, ref } from "vue"
   import * as PostQueries from "../utils/postQueries"

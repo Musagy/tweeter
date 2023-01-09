@@ -53,11 +53,11 @@
 
 <script setup lang="ts">
   import axios from "axios"
-  import { onMounted, Ref, ref } from "vue"
+  import { onMounted, type Ref, ref } from "vue"
   import { useToast } from "vue-toastification"
   import ChangePassword from "../components/changePassword.vue"
   import Layout from "../components/Layout.vue"
-  import { User } from "../types/Model"
+  import type { User } from "../types/Model"
   import { useAuthStore } from "../store/useAuthStore"
   import { storeToRefs } from "pinia"
   import authHandler from "../utils/authHandler"

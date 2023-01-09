@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, Ref, watch } from "vue"
+  import { computed, ref, type Ref, watch } from "vue"
 
   let textarea = <Ref<HTMLTextAreaElement>>ref()
   const resize = () => {

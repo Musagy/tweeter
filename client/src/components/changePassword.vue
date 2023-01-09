@@ -26,7 +26,7 @@
   import axios from "axios"
   import { ref } from "vue"
   import { useToast } from "vue-toastification"
-  import { User } from "../types/Model"
+  import type { User } from "../types/Model"
   import authHandler from "../utils/authHandler"
 
   const toast = useToast()
