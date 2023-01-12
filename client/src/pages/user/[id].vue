@@ -46,7 +46,7 @@
   import authHandler from "../../utils/authHandler"
   import LoadMorePostBtn from "../../components/LoadMorePostBtn.vue"
 
-  const { VITE_API } = import.meta.env
+  const VITE_API = import.meta.env.VITE_API
   const toast = useToast()
 
   const { params } = useRoute()

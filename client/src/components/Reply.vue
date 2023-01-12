@@ -47,7 +47,7 @@
 
   const isActive = ref(!!post.favorites.length)
   const handler = () => {
-    like.handler(post.id)
+    like.handler({ refPostId: post.id })
     isActive.value = !isActive.value
   }
 </script>

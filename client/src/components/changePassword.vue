@@ -52,7 +52,7 @@
     const user = <User>JSON.parse(userRaw)
     const { username } = user
 
-    const { VITE_API } = import.meta.env
+    const VITE_API = import.meta.env.VITE_API
     const url = VITE_API + "/user/change-password"
     try {
       const { data } = await axios.patch(url, {

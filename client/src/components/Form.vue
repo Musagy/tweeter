@@ -39,7 +39,7 @@
   const formData: Ref<FormData> = ref(initialData)
 
   const errHandler: Ref<string> = ref("")
-  const { VITE_API } = import.meta.env
+  const VITE_API = import.meta.env.VITE_API
 
   const handlerSubmit = async () => {
     try {

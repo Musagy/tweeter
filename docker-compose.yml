@@ -1,32 +1,19 @@
 version: "3.8"
 
 services:
-  # client:
-  #   build:
-  #     context: ./client
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./client:/tweeter/client
-  #   command: yarn dev
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
 
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "4001:4001"
-    links:
-      - postgres
-    env_file:
-      - server/.env
-    volumes:
-      # - ./server:/home/app/server
-      # - serverNM:/home/app/server/node_modules
-      - ./server:/home/app/server/dev
-      - serverNM:/home/app/server/dev/node_modules/
-
+      - "4000:4000"
 
   postgres:
     image: postgres:10.3
@@ -41,4 +28,3 @@ services:
 
 volumes:
   postgres:
-  serverNM:

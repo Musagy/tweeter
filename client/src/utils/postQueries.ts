@@ -5,7 +5,7 @@ import authHandler from "./authHandler"
 
 const toast = useToast()
 
-const { VITE_API } = import.meta.env
+const VITE_API = import.meta.env.VITE_API
 
 export const createPost = async (
   content: string,

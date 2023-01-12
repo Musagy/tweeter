@@ -64,7 +64,7 @@
 
   const toast = useToast()
 
-  const { VITE_API } = import.meta.env
+  const VITE_API = import.meta.env.VITE_API
 
   const avatarUrl = ref("https://osu.ppy.sh/images/layout/avatar-guest@2x.png")
   const bannerUrl = ref("")

@@ -5,7 +5,7 @@ import type { LoginResponse } from "../types/LoginForm"
 import { useRouter } from "vue-router"
 import axios from "axios"
 
-const { VITE_API } = import.meta.env
+const VITE_API = import.meta.env.VITE_API
 
 export const useAuthStore = defineStore("auth", () => {
   // Declarando estados para el usuario

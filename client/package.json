@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
-    "preview": "vite preview",
+    "preview": "vite preview --port 3000",
     "test": "playwright test",
     "test:debug": "playwright test --debug",
     "build-only": "vite build",

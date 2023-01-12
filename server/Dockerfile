@@ -1,27 +1,19 @@
 FROM node:18
 
-ENV DIR=/home/app/server
-RUN mkdir -p ${DIR}
-WORKDIR ${DIR}
+WORKDIR /tweeter/server
 
-COPY package.json .
-RUN yarn install && yarn cache clean
-# RUN yarn remove ts-node-dev
-# RUN yarn add --dev nodemon ts-node
+RUN npm i --location=global yarn --force
 
-## para evitar errores de los comandos
-ENV PATH=$DIR/node_modules/.bin:$PATH
+COPY . .
 
-WORKDIR ${DIR}/dev
-COPY tsconfig.json ./
+RUN yarn install
 
-COPY src ./src
-COPY .env ./
+RUN yarn prisma:generate
 
-# COPY . .
+RUN yarn prisma:deploy
 
-RUN npx prisma generate
+RUN yarn build
 
-EXPOSE ${PORT}
+EXPOSE 4000
 
-CMD [ "yarn", "dev" ]
+CMD [ "yarn", "start" ]

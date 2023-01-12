@@ -17,7 +17,7 @@ export type Interaction = {
   handler: (a: PosibleProps) => Promise<ToastID | undefined> | number | void
   postRef?: "favorites" | "retweets" | "saves"
 }
-const { VITE_API } = import.meta.env
+const VITE_API = import.meta.env.VITE_API
 const toast = useToast()
 
 const createReply = ({refPostId, unshifter}: PosibleProps) => {

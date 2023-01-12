@@ -58,7 +58,7 @@
   const isFollower = ref(false)
 
   const toast = useToast()
-  const { VITE_API } = import.meta.env
+  const VITE_API = import.meta.env.VITE_API
 
   const Authorization = <string>localStorage.getItem("token")
 
