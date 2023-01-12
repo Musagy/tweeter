@@ -114,7 +114,7 @@
   /* we will explain what these classes do next! */
   .v-enter-active,
   .v-leave-active {
-    transition: opacity 0.1s ease;
+    transition: all 0.2s ease;
   }
 
   .v-enter-from,

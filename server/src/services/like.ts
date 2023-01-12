@@ -72,7 +72,7 @@ export const getLiked = async (userId: number, page: number = 1) => {
     include: {
       post: {
         include: {
-          author: { select: { name: true, username: true, id: true } },
+          author: { select: { name: true, username: true, avatar: true } },
           _count: { select: { replies: true, retweets: true, saves: true } },
           favorites: { where: { userId: searcher } },
           retweets: { where: { authorId: searcher } },
@@ -80,7 +80,7 @@ export const getLiked = async (userId: number, page: number = 1) => {
           replies: {
             take: 10,
             include: {
-              author: { select: { username: true } },
+              author: { select: { username: true, avatar: true } },
               favorites: { where: { userId: searcher } },
               _count: { select: { favorites: true } },
             },

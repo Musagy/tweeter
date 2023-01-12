@@ -10,15 +10,18 @@
       <section class="posts-by-user">
         <FiltersCtn @setFilter="setFilter" :filters="filters" />
         <main>
+          <p v-if="postsFound[0] === undefined" class="no-posts">
+            Aun no se a creado ni un post
+          </p>
           <template
-            v-if="postsFound[0].length > 0"
+            v-else-if="postsFound[0]?.length > 0"
             v-for="loadedPosts in postsFound"
           >
             <Post v-for="post in loadedPosts" :post="post" :key="post.id" />
           </template>
           <Loading v-else />
           <LoadMorePostBtn
-            v-if="postsFound[0].length > 0"
+            v-if="postsFound[0]?.length > 0"
             @setAllPagePost="pushInAllPagePost"
             :queryPost="fetchPost"
           />
@@ -38,7 +41,7 @@
   import Layout from "../../components/Layout.vue"
   import UserHero from "../../components/UserHero.vue"
   import type { User, Post as PostType } from "../../types/Model"
-  import { getPostbyUserId } from "../../utils/postQueries"
+  import { getPostByUserId } from "../../utils/postQueries"
   import Loading from "../../components/Loading.vue"
   import authHandler from "../../utils/authHandler"
   import LoadMorePostBtn from "../../components/LoadMorePostBtn.vue"
@@ -87,14 +90,15 @@
   const postsFound = ref<PostType[][]>([[]])
 
   const fetchPost = async (page: number = 1) => {
-    return await getPostbyUserId(filterType.value, +params.id, page)
+    return await getPostByUserId(filterType.value, +params.id, page)
   }
   onMounted(async () => {
     const postPage = await fetchPost()
     if (postPage) postsFound.value[0] = postPage
+    if (postPage?.length === 0) postsFound.value.pop()
   })
 
-  watch(filterType, async newFilter => {
+  watch(filterType, async () => {
     postsFound.value = [[]]
     const postPage = await fetchPost()
     if (postPage) postsFound.value[0] = postPage
@@ -125,5 +129,14 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+  .no-posts {
+    align-self: center;
+    width: 500px;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #bbb;
+    text-align: center;
+    margin-top: 100px;
   }
 </style>

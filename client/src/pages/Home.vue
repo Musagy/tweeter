@@ -21,8 +21,8 @@
   import CreatePost from "../components/CreatePost.vue"
   import ForYouPage from "../components/ForYouPage.vue"
   import Trends from "../components/Trends.vue"
-  import { useUserNewPosts } from "../store/useUserNewPosts"
   import type { Post } from "../types/Model"
+  import { useUserNewPosts } from "../store/useUserNewPosts"
 
   const { insertNewPost } = useUserNewPosts()
   const unshifter = (newPost: Post) => insertNewPost(newPost)

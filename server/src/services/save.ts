@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client"
 import { Prisma } from "@prisma/client"
 import { String } from "../interfaces/typeNullable"
 
-
 const prisma = new PrismaClient()
 
 /**
@@ -28,7 +27,7 @@ export const saveAPost = async (userId: number, postId: number) => {
 }
 
 /**
- * Función para quitar el post de tus guardados 
+ * Función para quitar el post de tus guardados
  */
 export const unsaveAPost = async (userId: number, postId: number) => {
   const unlikeData = await prisma.saves.delete({
@@ -46,7 +45,7 @@ export const unsaveAPost = async (userId: number, postId: number) => {
 export const toggleSave = async (UserId: String, PostId: String) => {
   if (!UserId || !PostId) return "No se pudo hacer la accion por falta de datos"
   const [userId, postId] = [+UserId, +PostId]
-  
+
   const liked = await isSaved(userId, postId)
 
   switch (liked) {
@@ -96,7 +95,7 @@ export const getSaved = async (
     include: {
       post: {
         include: {
-          author: { select: { name: true, username: true, id: true } },
+          author: { select: { name: true, username: true, avatar: true } },
           _count: { select: { replies: true, retweets: true, saves: true } },
           favorites: { where: { userId: searcher } },
           retweets: { where: { authorId: searcher } },
@@ -104,7 +103,7 @@ export const getSaved = async (
           replies: {
             take: 10,
             include: {
-              author: { select: { username: true } },
+              author: { select: { username: true, avatar: true } },
               favorites: { where: { userId: searcher } },
               _count: { select: { favorites: true } },
             },

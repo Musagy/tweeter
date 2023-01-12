@@ -12,14 +12,14 @@ export const createPost = async (
   isPublic: boolean,
   image: File | null,
   additionalContent?: AdditionalContent
-): Promise<any> => {
+): Promise<Post | undefined> => {
   // Comprobar si el no hay nada en el post
   const Authorization = <string>localStorage.getItem("token")
 
   if (!content) {
-    toast.warning("Post vacio")
+    toast.warning("Post vació")
+    return
   }
-
   const formData = new FormData()
 
   if (image !== null) formData.append("image", image)
@@ -60,7 +60,6 @@ export const postsOfFYP = async (
       {},
       { headers: { Authorization } }
     )
-
     return newPost.data.posts
   } catch (err: any) {
     authHandler(err, () => {
@@ -144,7 +143,7 @@ export const bookmarksPost = async (
   }
 }
 
-export const getPostbyUserId = async (
+export const getPostByUserId = async (
   filter: "Tweets" | "TweetsNReplies" | "Media" | "Likes",
   userId: number,
   page: number

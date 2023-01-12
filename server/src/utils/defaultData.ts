@@ -5,7 +5,7 @@ export const API = request(app)
 
 const user = {
   password: "1234",
-  usernameOrEmail: "58042@test.io",
+  usernameOrEmail: "user@test.io",
 }
 
 export async function userTestWithPostCount() {

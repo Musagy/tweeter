@@ -1,6 +1,6 @@
 <template>
   <main>
-    <p @click="clickToPost">
+    <p @click="clickToPost" class="content">
       {{ post.content }}
     </p>
     <img v-if="post.image" :src="post.image" :alt="'image-post-' + post.id" class="post-image" />
@@ -46,7 +46,7 @@
     gap: 12px;
     flex-direction: column;
   }
-  p {
+  .content {
     font-family: Noto Sans;
     font-size: 16px;
     font-weight: 400;

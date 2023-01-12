@@ -3,7 +3,7 @@
     <h3>Trends para ti</h3>
     <hr />
     <div class="trends__ctn">
-      <RouterLink v-for="trend in trends" to="">
+      <RouterLink v-for="trend in trends" :to="'/search/' + trend.id">
         <b>#{{ trend.id }}</b>
         <span>{{ trend._count.posts }} Tweets</span>
       </RouterLink>

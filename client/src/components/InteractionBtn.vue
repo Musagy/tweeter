@@ -11,7 +11,6 @@
   import type { Interaction } from "../utils/postInteractions"
   const { interaction, post } = defineProps<{
     interaction: Interaction
-    // initState: boolean
     post: Post
   }>()
 
@@ -26,13 +25,19 @@
       : 0
   )
 
+  const unshifter = (newPost: Post) => {
+    post.replies.unshift(newPost)
+    console.log("add new post")
+  }
   const handler = async (id: number) => {
     if (interaction.postRef !== "retweets") {
-      interaction.handler(id)
+      interaction.handler({ refPostId: id })
     } else {
-      const newRetweetId = await (<Promise<number>>(
-        interaction.handler(id, retweetId.value)
-      ))
+      const newRetweetId = await (<Promise<number>>interaction.handler({
+        refPostId: id,
+        retweetId: retweetId.value,
+        unshifter,
+      }))
       if (newRetweetId !== undefined) {
         retweetId.value = newRetweetId
       }

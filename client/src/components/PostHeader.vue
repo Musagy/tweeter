@@ -1,8 +1,10 @@
 <template>
   <header>
-    <Avatar :photo="post.author.avatar" :user-id="post.authorId" />
-    <span>{{ post.author.username }}</span>
-    <p>{{ date }}</p>
+    <RouterLink :to="'/user/' + post.authorId">
+      <Avatar :photo="post.author.avatar" :user-id="post.authorId" />
+      <span>{{ post.author.username }}</span>
+      <p>{{ date }}</p>
+    </RouterLink>
   </header>
 </template>
 
@@ -30,17 +32,19 @@
 </script>
 
 <style scoped>
-  header {
+  header a {
     display: grid;
 
     grid-template-columns: 40px 1fr;
     grid-template-rows: 24px 16px;
     column-gap: 16px;
+    text-decoration: none;
   }
   span {
     font-family: Poppins;
     font-size: 16px;
     font-weight: 500;
+    color: black;
   }
   p {
     font-family: Noto Sans;

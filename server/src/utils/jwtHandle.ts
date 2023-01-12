@@ -1,7 +1,6 @@
 import { sign, verify } from "jsonwebtoken"
 
-import env from "./environment"
-const { KEY_SECRET } = env
+const KEY_SECRET = process.env.KEY_SECRET ?? ""
 
 const generateToken = (id: string) => {
   const jwt = sign({ id }, KEY_SECRET, {

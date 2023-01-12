@@ -2,28 +2,31 @@ import axios from "axios"
 import { useToast } from "vue-toastification"
 import type { ToastID } from "vue-toastification/dist/types/types"
 import { usePostModalStore } from "../store/usePostModalStore"
+import type { Post } from "../types/Model"
 import authHandler from "./authHandler"
 
+export type PosibleProps = {
+  refPostId: number
+  retweetId?: number
+  unshifter?: (newPost: Post) => any
+}
 export type Interaction = {
   icon: string
   title: string
   color: string
-  handler: (
-    prop: number,
-    retweetId?: number
-  ) => Promise<ToastID | undefined> | number | void
+  handler: (a: PosibleProps) => Promise<ToastID | undefined> | number | void
   postRef?: "favorites" | "retweets" | "saves"
 }
 const { VITE_API } = import.meta.env
 const toast = useToast()
 
-const createReply = (refPostId: number) => {
+const createReply = ({refPostId, unshifter}: PosibleProps) => {
   const modalStore = usePostModalStore()
   const { openModal } = modalStore
-  openModal(refPostId, "reply")
+  openModal(refPostId, "reply", unshifter)
 }
 
-const createRetweet = async (refPostId: number, retweetId?: number) => {
+const createRetweet = async ({ refPostId, retweetId }: PosibleProps) => {
   const Authorization = <string>localStorage.getItem("token")
   if (!retweetId) {
     try {
@@ -79,8 +82,8 @@ const toggle = async (refPostId: number, type: "like" | "save") => {
     })
   }
 }
-const toggleLike = (refPostId: number) => toggle(refPostId, "like")
-const toggleSave = (refPostId: number) => toggle(refPostId, "save")
+const toggleLike = ({ refPostId }: PosibleProps) => toggle(refPostId, "like")
+const toggleSave = ({ refPostId }: PosibleProps) => toggle(refPostId, "save")
 
 export const interactions: Interaction[] = [
   {

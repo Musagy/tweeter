@@ -195,8 +195,8 @@ export const searchPost: RequestHandler = async ({ query, params }, res) => {
     if (query?.take) page = <string>query.take
     if (query?.page) page = <string>query.page
 
-    let filter: "Top" | "Lastest" | "People" | "Media" =
-      <"Top" | "Lastest" | "People" | "Media">query.filter ?? "Top"
+    let filter: "Top" | "Latest" | "People" | "Media" =
+      <"Top" | "Latest" | "People" | "Media">query.filter ?? "Top"
 
     if (!(content || take || page)) return res.status(200).json([])
 

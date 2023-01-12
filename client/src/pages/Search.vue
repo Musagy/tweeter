@@ -21,7 +21,7 @@
 
       <div class="results">
         <Loading v-if="loading" />
-        <p v-else-if="postsFound[0].length === 0">Busca algo</p>
+        <p v-else-if="postsFound[0].length === 0" class="no-search">Busca algo</p>
         <template v-else v-for="loadedPosts in postsFound">
           <Post v-for="post in loadedPosts" :post="post" :key="post.id" />
         </template>
@@ -53,7 +53,7 @@
     },
     {
       type: "Recientes",
-      query: "Lastest",
+      query: "Latest",
     },
     {
       type: "Personas",
@@ -115,7 +115,7 @@
     max-width: 745px;
 
     display: flex;
-    gap: 32px;
+    gap: 18px;
     width: 100%;
 
     background: #ffffff;
@@ -163,5 +163,14 @@
   .material-symbols-outlined {
     font-variation-settings: "FILL" 1, "wght" 700, "GRAD" 0, "opsz" 48;
     color: #bdbdbd;
+    margin-left: 8px;
+  }
+
+  .no-search {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #bbb;
+    text-align: center;
+    margin-top: 150px;
   }
 </style>

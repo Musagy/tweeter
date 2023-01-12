@@ -10,7 +10,7 @@
     <template v-if="post.replies.length > 0">
       <hr />
       <div class="replies__ctn">
-        <Reply v-for="reply in post.replies" :post="reply" />
+        <Reply v-for="reply in post.replies" :post="reply" :id="reply.id" />
       </div>
       <template v-if="post._count.replies > (isIndividualPost ? 10 : 3)">
         <hr />
@@ -37,11 +37,7 @@
   const modalStore = usePostModalStore()
   const { openModal } = modalStore
 
-  const unshifter = (newPost: Post) => {
-    let commentaries = post.replies
-    commentaries.unshift(newPost)
-    post.replies = commentaries
-  }
+  const unshifter = (newPost: Post) => post.replies.unshift(newPost)
   const createReply = () => {
     openModal(post.id, "reply", unshifter)
   }

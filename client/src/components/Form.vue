@@ -58,7 +58,6 @@
       router.push("/")
     } catch (err: any) {
       authHandler(err, () => {
-        console.log(err)
         if (err.response.data) {
           errHandler.value = err.response.data.error
           toast.error(errHandler.value)

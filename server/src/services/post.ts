@@ -212,7 +212,7 @@ export const searchPost = async (
   search: string,
   page: String = "1",
   take: String = "10",
-  filter: "Top" | "Lastest" | "People" | "Media"
+  filter: "Top" | "Latest" | "People" | "Media"
 ) => {
   // Esta constante almacenara los post que retornara getPostPage con los ajustes para el buscador
 
@@ -220,12 +220,12 @@ export const searchPost = async (
     orderBy?: Prisma.PostsOrderByWithRelationInput
     where?: Prisma.PostsWhereInput
   }
-  const filters: { [e in "Top" | "Lastest" | "People" | "Media"]: Filters } = {
+  const filters: { [e in "Top" | "Latest" | "People" | "Media"]: Filters } = {
     Top: {
       orderBy: { favorites: { _count: "desc" } },
       where: { content: { contains: search } },
     },
-    Lastest: {
+    Latest: {
       orderBy: { createdAt: "desc" },
       where: { content: { contains: search } },
     },
