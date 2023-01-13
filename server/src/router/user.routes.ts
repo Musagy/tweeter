@@ -6,7 +6,7 @@ import { uploadMany } from "../middleware/upload"
 const router = Router()
 
 router.get("/follow/:user", checkJwt, userCtrl.toggleFollow)
-router.get("/is-follower/:userId", checkJwt, userCtrl.isFollower)
+router.get("/is-follower/:user", checkJwt, userCtrl.isFollower)
 
 router.get("/:id", userCtrl.getUserById)
 

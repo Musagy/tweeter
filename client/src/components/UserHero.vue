@@ -23,10 +23,18 @@
           </h2>
         </div>
         <template v-if="userCurrent.id !== user?.id">
-          <button v-if="!isFollower" @click="followToggle" class="add">
+          <button
+            v-if="!isFollower"
+            @click="() => followToggle(user?.id ?? 0)"
+            class="add"
+          >
             <span class="material-symbols-outlined"> person_add </span>Seguir
           </button>
-          <button v-else @click="followToggle" class="remove">
+          <button
+            v-else
+            @click="() => followToggle(user?.id ?? 0)"
+            class="remove"
+          >
             <span class="material-symbols-outlined"> person_remove </span>Dejar
             de Seguir
           </button>
@@ -43,14 +51,14 @@
 <script setup lang="ts">
   import axios from "axios"
   import { onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+  import { useRoute } from "vue-router"
   import { useToast } from "vue-toastification"
   import type { User } from "../types/Model"
   import authHandler from "../utils/authHandler"
   import Avatar from "./Avatar.vue"
-  
+
   const { params } = useRoute()
-  
+
   const { user } = defineProps<{
     user: User | null
   }>()
@@ -66,23 +74,21 @@ import { useRoute } from "vue-router"
   const Authorization = <string>localStorage.getItem("token")
 
   onMounted(async () => {
-    if (user?.id) {
+    console.log(params.id)
+    if (params.id) {
       const { data } = await axios.get(
-        `${VITE_API}/user/is-follow/${params.id}`,
+        `${VITE_API}/user/is-follower/${params.id}`,
         { headers: { Authorization } }
       )
       isFollower.value = data.isFollower
     }
   })
-  const followToggle = async () => {
+  const followToggle = async (userId: number) => {
     try {
-      if (user?.id !== undefined) {
-        const { data } = await axios.get(
-          `${VITE_API}/user/follow/${params.id}`,
-          {
-            headers: { Authorization },
-          }
-        )
+      if (userId !== undefined) {
+        const { data } = await axios.get(`${VITE_API}/user/follow/${userId}`, {
+          headers: { Authorization },
+        })
         toast(data.message)
         isFollower.value = !isFollower.value
       } else {

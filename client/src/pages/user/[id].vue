@@ -6,7 +6,7 @@
     }"
   >
     <main class="main-ctn">
-      <UserHero :user="user" :userId="`${params.id}` ?? ''" key="hero" />
+      <UserHero :user="user" key="hero" />
       <section class="posts-by-user">
         <FiltersCtn @setFilter="setFilter" :filters="filters" />
         <main>
@@ -56,6 +56,7 @@
     try {
       const { data } = await axios.get(VITE_API + "/user/" + params.id)
       user.value = <User>data
+      console.log(user.value)
     } catch (err: any) {
       authHandler(err, () => {
         toast.error(err.response.data)
