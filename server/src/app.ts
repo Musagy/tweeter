@@ -10,7 +10,7 @@ const app = express()
 // server config
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://tweeter-musagy.vercel.app/login"],
+    origin: ["http://localhost:3000", "https://tweeter-musagy.vercel.app"],
   })
 )
 app.use(express.json())
