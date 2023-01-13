@@ -19,18 +19,20 @@ const routes: Readonly<RouteRecordRaw[]> = [
     name: "Register",
     meta: { reqAuth: false },
   },
-  { path: "/user/:id", component: User, name: "User" },
-  { path: "/post/:id", component: PostById, name: "Post by Id" },
-  { path: "/settings", component: Settings, name: "Settings" },
+  { path: "/user/:id", component: User, name: "User", meta: { reqAuth: true } },
+  { path: "/post/:id", component: PostById, name: "Post by Id", meta: { reqAuth: true } },
+  { path: "/settings", component: Settings, name: "Settings", meta: { reqAuth: true } },
   {
     path: "/search/:search",
     component: Search,
     name: "Search that",
+    meta: { reqAuth: true }
   },
   {
     path: "/search",
     component: Search,
     name: "Search",
+    meta: { reqAuth: true }
   },
   {
     path: "/bookmarks",
