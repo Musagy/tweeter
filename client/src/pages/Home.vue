@@ -7,7 +7,6 @@
     }"
   >
     <main>
-      {{ a }}
       <CreatePost @unshifter="unshifter" />
       <ForYouPage />
     </main>
@@ -26,7 +25,6 @@
   import { useUserNewPosts } from "../store/useUserNewPosts"
 
   const { insertNewPost } = useUserNewPosts()
-  const a = import.meta.env.VITE_API
   const unshifter = (newPost: Post) => insertNewPost(newPost)
 </script>
 
