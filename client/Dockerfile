@@ -6,6 +6,8 @@ RUN npm i --location=global yarn --force
 
 COPY . .
 
+COPY .env .
+
 RUN yarn install
 
 RUN yarn build
