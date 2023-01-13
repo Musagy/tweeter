@@ -22,14 +22,12 @@
 
 <!-- TABLE OF CONTENTS -->
 
-## Table of Contents
+## Tabla de Contenido
 
-- [Overview](#overview)
-- [Built With](#built-with)
-- [Features](#features)
-- [How to use](#how-to-use)
-- [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
+- [Descripción general](#descripción-general)
+- [Se construyo con](#se-construyo-con)
+- [Como usarlo](#como-usarlo)
+- [Contactos](#contactos)
 
 <!-- OVERVIEW -->
 
@@ -98,7 +96,7 @@ Y por ultimo si quieres ejecutar los test tienes que crear primero un usuario co
   - Password: "1234"
 ```
 
-## Contacto
+## Contactos
 
 - Website [musagy.me](https://musagy.me)
 - GitHub [@Musagy](https://github.com/musagy)
