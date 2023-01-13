@@ -43,14 +43,16 @@
 <script setup lang="ts">
   import axios from "axios"
   import { onMounted, ref } from "vue"
+import { useRoute } from "vue-router"
   import { useToast } from "vue-toastification"
   import type { User } from "../types/Model"
   import authHandler from "../utils/authHandler"
   import Avatar from "./Avatar.vue"
-
-  const { user, userId } = defineProps<{
+  
+  const { params } = useRoute()
+  
+  const { user } = defineProps<{
     user: User | null
-    userId: string
   }>()
 
   const userRaw = <string>localStorage.getItem("user")
@@ -66,7 +68,7 @@
   onMounted(async () => {
     if (user?.id) {
       const { data } = await axios.get(
-        `${VITE_API}/user/is-follow/${userId}`,
+        `${VITE_API}/user/is-follow/${params.id}`,
         { headers: { Authorization } }
       )
       isFollower.value = data.isFollower
@@ -76,7 +78,7 @@
     try {
       if (user?.id !== undefined) {
         const { data } = await axios.get(
-          `${VITE_API}/user/follow/${userId}`,
+          `${VITE_API}/user/follow/${params.id}`,
           {
             headers: { Authorization },
           }
