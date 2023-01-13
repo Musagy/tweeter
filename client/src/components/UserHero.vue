@@ -48,8 +48,9 @@
   import authHandler from "../utils/authHandler"
   import Avatar from "./Avatar.vue"
 
-  const { user } = defineProps<{
+  const { user, userId } = defineProps<{
     user: User | null
+    userId: string
   }>()
 
   const userRaw = <string>localStorage.getItem("user")
@@ -65,7 +66,7 @@
   onMounted(async () => {
     if (user?.id) {
       const { data } = await axios.get(
-        `${VITE_API}/user/is-follow/${user?.id}`,
+        `${VITE_API}/user/is-follow/${userId}`,
         { headers: { Authorization } }
       )
       isFollower.value = data.isFollower
@@ -73,11 +74,18 @@
   })
   const followToggle = async () => {
     try {
-      const { data } = await axios.get(`${VITE_API}/user/follow/${user?.id}`, {
-        headers: { Authorization },
-      })
-      toast(data.message)
-      isFollower.value = !isFollower.value
+      if (user?.id !== undefined) {
+        const { data } = await axios.get(
+          `${VITE_API}/user/follow/${userId}`,
+          {
+            headers: { Authorization },
+          }
+        )
+        toast(data.message)
+        isFollower.value = !isFollower.value
+      } else {
+        toast.error("no se pudo leer la id del perfil")
+      }
     } catch (err: any) {
       authHandler(err, () => {
         toast.error(err.response.data.error)

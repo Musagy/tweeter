@@ -6,7 +6,7 @@
     }"
   >
     <main class="main-ctn">
-      <UserHero :user="user" key="hero" />
+      <UserHero :user="user" :userId="`${params.id}` ?? ''" key="hero" />
       <section class="posts-by-user">
         <FiltersCtn @setFilter="setFilter" :filters="filters" />
         <main>
