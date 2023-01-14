@@ -11,7 +11,7 @@
     </a>
     <span> | </span>
     <a href="https://github.com/Musagy/tweeter">
-      Solucioón
+      Solución
     </a>
     <span> | </span>
     <a href="https://devchallenges.io/challenges/rleoQc34THclWx1cFFKH">
