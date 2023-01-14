@@ -11,11 +11,11 @@
     </a>
     <span> | </span>
     <a href="https://github.com/Musagy/tweeter">
-      Solution
+      Solucioón
     </a>
     <span> | </span>
     <a href="https://devchallenges.io/challenges/rleoQc34THclWx1cFFKH">
-      Challenge
+      Reto
     </a>
   </h3>
 </div>
