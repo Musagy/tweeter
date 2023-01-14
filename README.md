@@ -6,11 +6,11 @@
 
 <div align="center">
   <h3>
-    <a href="https://{your-demo-link.your-domain}">
+    <a href="https://tweeter-musagy.vercel.app">
       Demo
     </a>
     <span> | </span>
-    <a href="https://https://github.com/Musagy/tweeter">
+    <a href="https://github.com/Musagy/tweeter">
       Solution
     </a>
     <span> | </span>
